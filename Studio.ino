@@ -1,48 +1,20 @@
 #include "Settings.h"
-
-CRGBPalette16 currentPalette;
-TBlendType    currentBlending;
-
-//extern CRGBPalette16 myRedWhiteBluePalette;
-//extern const TProgmemPalette16 myRedWhiteBluePalette_p PROGMEM;
-
-
+int c;
 void setup() {
-    delay( 3000 ); // power-up safety delay
+    Serial.begin(115200);
     FastLED.addLeds<LED_TYPE, LED_PIN, COLOR_ORDER>(leds, NUM_LEDS).setCorrection( TypicalLEDStrip );
-    FastLED.setBrightness(BRIGHTNESS );
-    
-    SetupBlackAndWhiteStripedPalette();
-    currentBlending = LINEARBLEND;
+    FastLED.setBrightness(BRIGHTNESS);
+    setupPalette();
+    /*for (int i = 0; i < 100; i++){
+        leds[i] = ColorFromPalette(currentPalette, 1, 255, currentBlending);
+    }*/
 }
 
 
-void loop()
-{
-    
-    static uint8_t startIndex = 0;
-    startIndex += 4; /* motion speed */
-    
-    FillLEDsFromPaletteColors(startIndex);
-    
+void loop() {
+    RGBhandle();
     FastLED.show();
     FastLED.delay(1000 / UPDATES_PER_SECOND);
-}
-
-void FillLEDsFromPaletteColors(uint8_t colorIndex)
-{
-    uint8_t brightness = 255;
-    
-    for( int i = 0; i < NUM_LEDS; ++i) {
-        leds[i] = ColorFromPalette(currentPalette, colorIndex, brightness, currentBlending);
-        colorIndex += 3;
-    }
-}
-
-
-void SetupBlackAndWhiteStripedPalette()
-{
-    fill_solid( currentPalette, 16, CHSV(25, 190, 255));
 }
 
 // This function sets up a palette of purple and green stripes.
