@@ -1,6 +1,6 @@
 void setupPalette(){
     fill_solid(currentPalette, 16, CRGB::Black);
-    CRGB custom = CHSV(27, 175, 255);
+    CRGB custom = CHSV(28, 170, 255);
     CRGB black  = CRGB::Black;
     CRGB base  = CRGB::LightSeaGreen;
     currentPalette = CRGBPalette16(
