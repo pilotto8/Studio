@@ -1,7 +1,25 @@
 #include "Settings.h"
 int c;
 void setup() {
-    Serial.begin(115200);
+    Serial.begin(9600);
+    pinMode(SRCLK, OUTPUT);
+    pinMode(RCLK, OUTPUT);
+    pinMode(DATA_OUT, OUTPUT);
+    pinMode(DATA_IN, INPUT_PULLUP);
+    Wire.begin();
+
+    /*if(!display.begin(SSD1306_SWITCHCAPVCC, SCREEN_ADDRESS)) {
+        Serial.println(F("SSD1306 allocation failed"));
+        for(;;); // Don't proceed, loop forever
+    }
+    display.invertDisplay(true);
+    display.clearDisplay();
+
+    display.setTextSize(1);      // Normal 1:1 pixel scale
+    display.setTextColor(SSD1306_WHITE); // Draw white text
+    display.setCursor(0, 0);     // Start at top-left corner
+    display.print("Ciao");         // Use full 256 char 'Code Page 437' font
+    display.display();*/
     FastLED.addLeds<LED_TYPE, LED_PIN, COLOR_ORDER>(leds, NUM_LEDS).setCorrection( TypicalLEDStrip );
     FastLED.setBrightness(BRIGHTNESS);
     setupPalette();

@@ -1,6 +1,5 @@
 // LEDs
 #include <FastLED.h>
-#define LED_PIN     9
 #define NUM_LEDS    100
 #define BRIGHTNESS  255
 #define LED_TYPE    WS2811
@@ -17,3 +16,23 @@ enum modes {
     decrease = -1,
     increase = 1        
 };
+
+// PIN
+#define LED_PIN 9
+#define SRCLK 10
+#define RCLK 7
+#define DATA_OUT 11
+#define DATA_IN 8
+//#define SDA A5
+//#define SDA A4
+
+//Oled
+#include <Wire.h>
+#include <Adafruit_GFX.h>
+#include <Adafruit_SSD1306.h>
+
+#define SCREEN_WIDTH 128
+#define SCREEN_HEIGHT 64
+#define OLED_RESET -1
+#define SCREEN_ADDRESS 0x3C
+Adafruit_SSD1306 display(SCREEN_WIDTH, SCREEN_HEIGHT, &Wire, OLED_RESET);
