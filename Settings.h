@@ -23,8 +23,6 @@ enum modes {
 #define RCLK 7
 #define DATA_OUT 11
 #define DATA_IN 8
-//#define SDA A5
-//#define SDA A4
 
 //Oled
 #include <Wire.h>
@@ -36,3 +34,4 @@ enum modes {
 #define OLED_RESET -1
 #define SCREEN_ADDRESS 0x3C
 Adafruit_SSD1306 display(SCREEN_WIDTH, SCREEN_HEIGHT, &Wire, OLED_RESET);
+

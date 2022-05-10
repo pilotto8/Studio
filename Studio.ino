@@ -10,18 +10,21 @@ void setup() {
     FastLED.addLeds<LED_TYPE, LED_PIN, COLOR_ORDER>(leds, NUM_LEDS).setCorrection( TypicalLEDStrip );
     FastLED.setBrightness(BRIGHTNESS);
     setupPalette();
-
-    /*if(!display.begin(SSD1306_SWITCHCAPVCC, SCREEN_ADDRESS)) {
-        Serial.println(F("SSD1306 allocation failed"));
-        for(;;); // Don't proceed, loop forever
+    do {
+        RGBhandle();
+        FastLED.show();
+        FastLED.delay(1000 / UPDATES_PER_SECOND);
     }
-    while(true){
+    while(!animation_finished);
+
+    if(!display.begin(SSD1306_SWITCHCAPVCC, SCREEN_ADDRESS)) {
+        Serial.println(F("SSD1306 allocation failed"));
+    }
     display.setTextSize(1);      // Normal 1:1 pixel scale
     display.setTextColor(SSD1306_WHITE); // Draw white text
     display.setCursor(0, 0);     // Start at top-left corner
     display.print("Ciao");         // Use full 256 char 'Code Page 437' font
     display.display();
-    }*/
     
     
     
@@ -32,9 +35,7 @@ void setup() {
 
 
 void loop() {
-    RGBhandle();
-    FastLED.show();
-    FastLED.delay(1000 / UPDATES_PER_SECOND);
+    
 }
 
 // This function sets up a palette of purple and green stripes.
