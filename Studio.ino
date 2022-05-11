@@ -1,4 +1,5 @@
 #include "Settings.h"
+#define LUCE 0
 int c;
 void setup() {
     Serial.begin(9600);
@@ -6,36 +7,37 @@ void setup() {
     pinMode(RCLK, OUTPUT);
     pinMode(DATA_OUT, OUTPUT);
     pinMode(DATA_IN, INPUT_PULLUP);
+    
+    pinMode(3, OUTPUT);
+    pinMode(4, OUTPUT);
+    pinMode(5, OUTPUT);
+    pinMode(6, OUTPUT);
 
-    FastLED.addLeds<LED_TYPE, LED_PIN, COLOR_ORDER>(leds, NUM_LEDS).setCorrection( TypicalLEDStrip );
-    FastLED.setBrightness(BRIGHTNESS);
-    setupPalette();
-    do {
-        RGBhandle();
-        FastLED.show();
-        FastLED.delay(1000 / UPDATES_PER_SECOND);
-    }
-    while(!animation_finished);
-
-    if(!display.begin(SSD1306_SWITCHCAPVCC, SCREEN_ADDRESS)) {
-        Serial.println(F("SSD1306 allocation failed"));
-    }
-    display.setTextSize(1);      // Normal 1:1 pixel scale
-    display.setTextColor(SSD1306_WHITE); // Draw white text
-    display.setCursor(0, 0);     // Start at top-left corner
-    display.print("Ciao");         // Use full 256 char 'Code Page 437' font
-    display.display();
+    #if LUCE
+        FastLED.addLeds<LED_TYPE, LED_PIN, COLOR_ORDER>(leds, NUM_LEDS).setCorrection( TypicalLEDStrip );
+        FastLED.setBrightness(BRIGHTNESS);
+        setupPalette();
+        do {
+            RGBhandle();
+            FastLED.show();
+            FastLED.delay(1000 / UPDATES_PER_SECOND);
+        }
+        while(!animation_finished);
+        UPDATES_PER_SECOND = 0;
+    #endif
     
-    
-    
-    /*for (int i = 0; i < 100; i++){
-        leds[i] = ColorFromPalette(currentPalette, 1, 255, currentBlending);
-    }*/
+    oledInit();
+    findButton();
 }
 
 
 void loop() {
-    
+    if (!digitalRead(DATA_IN)){
+        swi = !swi;
+        digitalWrite(6, swi);
+        while(!digitalRead(DATA_IN));
+        delay(60);
+    }
 }
 
 // This function sets up a palette of purple and green stripes.

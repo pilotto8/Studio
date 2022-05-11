@@ -5,7 +5,7 @@
 #define LED_TYPE    WS2811
 #define COLOR_ORDER BRG
 CRGB leds[NUM_LEDS];
-#define UPDATES_PER_SECOND 40
+int UPDATES_PER_SECOND = 80;
 CRGBPalette16 currentPalette;
 TBlendType    currentBlending;
 byte animation = 0;
@@ -19,13 +19,12 @@ enum modes {
 
 // PIN
 #define LED_PIN 9
-#define SRCLK 10
-#define RCLK 7
+#define RCLK 10
+#define SRCLK 7
 #define DATA_OUT 11
 #define DATA_IN 8
 
 //Oled
-#include <Wire.h>
 #include <Adafruit_GFX.h>
 #include <Adafruit_SSD1306.h>
 
@@ -34,4 +33,25 @@ enum modes {
 #define OLED_RESET -1
 #define SCREEN_ADDRESS 0x3C
 Adafruit_SSD1306 display(SCREEN_WIDTH, SCREEN_HEIGHT, &Wire, OLED_RESET);
+#define NUM_ROWS 5
 
+//Registers
+#define CLR(x,y) (x&=(~(1<<y)))
+#define SET(x,y) (x|=(1<<y))
+uint8_t regState[2] = {255, 255};
+uint8_t regStatePrev[2] = {255, 255};
+byte button;
+enum buttons{
+    null,
+    down,
+    centre,
+    up,
+    bA,
+    bB,
+    bC,
+    bD
+};
+
+
+//Test
+bool swi;
