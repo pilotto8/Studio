@@ -1,10 +1,9 @@
 #include "Settings.h"
-#define LUCE 0
-#define OLED 1
+#define LUCE 1
+#define OLED 0
 #define RTC 0
-int c;
 void setup() {
-    Serial.begin(9600);
+    Serial.begin(115200);
     pinMode(SRCLK, OUTPUT);
     pinMode(RCLK, OUTPUT);
     pinMode(DATA_OUT, OUTPUT);
@@ -50,17 +49,43 @@ void setup() {
     rtc.writeSqwPinMode(DS3231_OFF);
     rtc.disableAlarm(2);
     #endif
-    
-    findButton();
+    pushBits();
 }
 
 
 void loop() {
-    if (!digitalRead(DATA_IN)){
+    /*if (!digitalRead(DATA_IN)){
         swi = !swi;
         digitalWrite(6, swi);
         while(!digitalRead(DATA_IN));
-        delay(60);
+        delay(60); 
+    }*/
+    if (!digitalRead(DATA_IN)){
+        if (millis() - debounce > 30){
+            if (button == 0){
+                button = findButton();
+                Serial.println(button);
+                switch (button){
+                    case 1 ... 4:{
+
+                        break;
+                    }
+                    case 5 ... 7:{
+                        
+                        break;
+                    }
+                }
+            }
+            
+        }
+    }
+    else{
+        if (button){
+            button = 0;
+            setBits(9, 15, 0);
+            pushBits();
+        }
+        debounce = millis();
     }
 }
 
