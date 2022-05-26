@@ -61,17 +61,16 @@ void loop() {
         delay(60); 
     }*/
     if (!digitalRead(DATA_IN)){
-        if (millis() - debounce > 30){
+        if (millis() - debounce > 50){
             if (button == 0){
                 button = findButton();
-                Serial.println(button);
                 switch (button){
-                    case 1 ... 4:{
+                    case 1 ... 3:{
 
                         break;
                     }
-                    case 5 ... 7:{
-                        
+                    case 4 ... 7:{
+                        pushPlugState(button - 3, 2);
                         break;
                     }
                 }
@@ -79,13 +78,16 @@ void loop() {
             
         }
     }
-    else{
+    else {
         if (button){
             button = 0;
             setBits(9, 15, 0);
-            pushBits();
         }
         debounce = millis();
+        if (reg_update){
+            pushBits();
+            reg_update = 0;
+        }
     }
 }
 

@@ -38,21 +38,18 @@ Adafruit_SSD1306 display(SCREEN_WIDTH, SCREEN_HEIGHT, &Wire, OLED_RESET);
 //Registers
 #define CLR(x,y) (x&=(~(1<<y)))
 #define SET(x,y) (x|=(1<<y))
-byte regState[2] = {B00000100, B10000000};
+byte regState[2];
 //byte regStatePrev[2] = {255, 255};
 byte button;
+bool reg_update;
 enum buttons{
     null,
-    down,
-    centre,
     up,
-    bA,
-    bB,
+    centre,
+    down,
+    bD,
     bC,
-    bD
+    bB,
+    bA
 };
 unsigned long int debounce;
-
-
-//Test
-bool swi;

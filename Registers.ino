@@ -1,8 +1,6 @@
 byte findButton(){
     byte i = 9;
     byte c = 4;
-    /*regState[0] = B00000100;
-    regState[1] = B10000000;*/
     
     setBits(13, 15, 1);
     while(c >= 1){
@@ -18,6 +16,7 @@ byte findButton(){
         setBits(i, i + 1, 0);
         pushBits();
     }
+    reg_update = 0;
     return i - 8;
 }
 
@@ -52,4 +51,17 @@ void setBits(byte a, byte b, bool bit){
         regState[0] -= (regState[0] & temp[0]);
         regState[1] -= (regState[1] & temp[1]);
     }
+    reg_update = 1;
+}
+
+void setBits(byte a, bool bit){
+    setBits(a, a, bit);
+}
+
+bool readBits(byte a){
+    byte temp = regState[a / 8] << (a % 8);
+    if (temp >> 7){
+        return 1;
+    }
+    return 0;
 }
