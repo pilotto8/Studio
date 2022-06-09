@@ -35,12 +35,26 @@ enum modes {
 Adafruit_SSD1306 display(SCREEN_WIDTH, SCREEN_HEIGHT, &Wire, OLED_RESET);
 #define NUM_ROWS 5
 
+bool oled_update;
+byte interface;
+byte prev_interface;
+enum interfaces{
+    home_inter = 1,
+    settings_inter,
+    light_inter,
+    plug_inter
+};
+byte element_total;
+byte element_selected;
+bool title_list;
+
+
 //Registers
 #define CLR(x,y) (x&=(~(1<<y)))
 #define SET(x,y) (x|=(1<<y))
 byte regState[2];
-//byte regStatePrev[2] = {255, 255};
 byte button;
+byte button_pulse;
 bool reg_update;
 enum buttons{
     null,

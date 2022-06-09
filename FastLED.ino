@@ -32,7 +32,7 @@ void RGBhandle(){
             }
         }
     }
-    if (animation_finished == 0){
+    if (!animation_finished){
         switch (animation){
             case 0: {
                 reportBuffer();
@@ -40,6 +40,8 @@ void RGBhandle(){
                 break;
             }
         }
+        FastLED.show();
+        FastLED.delay(1000 / UPDATES_PER_SECOND);
     }
 }
 

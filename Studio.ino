@@ -18,20 +18,6 @@ void setup() {
         FastLED.addLeds<LED_TYPE, LED_PIN, COLOR_ORDER>(leds, NUM_LEDS).setCorrection( TypicalLEDStrip );
         FastLED.setBrightness(BRIGHTNESS);
         setupPalette();
-        do {
-            RGBhandle();
-            FastLED.show();
-            FastLED.delay(1000 / UPDATES_PER_SECOND);
-        }
-        while(!animation_finished);
-        UPDATES_PER_SECOND = 0;
-    #endif
-    
-    #if I2CDEV_IMPLEMENTATION == I2CDEV_ARDUINO_WIRE
-        Wire.begin();
-        Wire.setClock(400000); // 400kHz I2C clock. Comment this line if having compilation difficulties
-    #elif I2CDEV_IMPLEMENTATION == I2CDEV_BUILTIN_FASTWIRE
-        Fastwire::setup(400, true);
     #endif
     
     #if OLED
@@ -54,15 +40,13 @@ void setup() {
 
 
 void loop() {
-    /*if (!digitalRead(DATA_IN)){
-        swi = !swi;
-        digitalWrite(6, swi);
-        while(!digitalRead(DATA_IN));
-        delay(60); 
-    }*/
+    #if LUCE
+        RGBhandle();
+    #endif
+
     if (!digitalRead(DATA_IN)){
         if (millis() - debounce > 50){
-            if (button == 0){
+            if (!button){
                 button = findButton();
                 switch (button){
                     case 1 ... 3:{
@@ -70,12 +54,11 @@ void loop() {
                         break;
                     }
                     case 4 ... 7:{
-                        pushPlugState(button - 3, 2);
+                        pushPlugState(button - 3, 2); /// State 2 means to invert the current state
                         break;
                     }
                 }
             }
-            
         }
     }
     else {

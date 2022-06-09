@@ -11,3 +11,66 @@ void oledInit(){
     display.display();
 }
 
+void loadInterface(){
+    if (interface != prev_interface){
+        interface = prev_interface;
+        //Setup interface
+        switch (interface){
+            case home_inter:{
+                element_total = 0;
+                title_list = 0;
+                break;
+            }
+            case settings_inter:{
+                element_total = 2;
+                title_list = 1;
+                defElement(0, "Light", light_inter);
+                defElement(1, "power plug", plug_inter)
+                break;
+            }
+        }
+        if (title_list){
+            element_selected = 1;
+        }
+        else {
+            element_selected = 0;
+        }
+        oled_update = 1;
+    }
+    //Running interface
+    switch (interface){
+        case home_inter:{
+            break;
+        }
+        case settings_inter ... light_inter:{
+            interfaceList();
+            break;
+        }
+    }
+}
+
+struct {
+    char name[10];
+    int *pointer;
+    byte interface;
+    byte min;
+    byte max;
+}element_list[10];
+
+void defElement(byte number, char name[10], byte interface){
+    element_list[number].name = name;
+    element_list[number].interface = interface;
+}
+void defElement(byte number, char name[10], int pointer, byte min, byte max){
+    element_list[number].name = name;
+    element_list[number].pointer = pointer;
+    element_list[number].min = min;
+    element_list[number].max = max;
+}
+
+void interfaceList(){
+    if (oled_update){
+        oled_update = 0;
+
+    }
+}
