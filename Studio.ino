@@ -1,6 +1,6 @@
 #include "Settings.h"
-#define LUCE 1
-#define OLED 0
+#define LUCE 0
+#define OLED 1
 #define RTC 0
 void setup() {
     Serial.begin(115200);
@@ -38,19 +38,27 @@ void setup() {
     pushBits();
 }
 
-
+#define scrolling_time 10
+#define debounce 50
 void loop() {
     #if LUCE
         RGBhandle();
     #endif
 
     if (!digitalRead(DATA_IN)){
-        if (millis() - debounce > 50){
+        if (millis() - last_millis > debounce){
             if (!button){
                 button = findButton();
                 switch (button){
                     case 1 ... 3:{
-
+                        #if LUCE
+                        if (button == center){
+                            animation = !animation;
+                        }
+                        #endif
+                        if (button == center){
+                            button_pulse = center;
+                        }
                         break;
                     }
                     case 4 ... 7:{
@@ -59,19 +67,32 @@ void loop() {
                     }
                 }
             }
+            if (button == up || button == down){
+                if (button_pulse == 0 && int((millis() - last_millis + debounce) / 10) % scrolling_time == 0){
+                    button_pulse = button;
+                }
+                else{
+                    button_pulse = 0;
+                }
+            }
         }
     }
     else {
+        last_millis = millis();
         if (button){
             button = 0;
+            button_pulse = 0;
             setBits(9, 15, 0);
         }
-        debounce = millis();
         if (reg_update){
             pushBits();
             reg_update = 0;
         }
     }
+
+    #if OLED
+        loadInterface();
+    #endif
 }
 
 // This function sets up a palette of purple and green stripes.

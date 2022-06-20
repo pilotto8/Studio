@@ -30,13 +30,28 @@ void RGBhandle(){
                 LEDbuffer[10] = 15;
                 break;
             }
+            case 1: {
+                /*for (i = 0; i < 100; i++){
+                    leds[i] = CRGB::Black;
+                }*/
+                fillBuffer(0);
+                LEDbuffer[9] = 1;
+                LEDbuffer[10] = 1;
+                break;
+            }
         }
     }
+    // Running
     if (!animation_finished){
         switch (animation){
             case 0: {
                 reportBuffer();
                 animation_finished = wave(decrease);
+                break;
+            }
+            case 1: {
+                reportBuffer();
+                animation_finished = wave(increase);
                 break;
             }
         }

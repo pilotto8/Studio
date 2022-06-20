@@ -1,3 +1,4 @@
+#include <stdio.h>
 // LEDs
 #include <FastLED.h>
 #define NUM_LEDS    100
@@ -35,17 +36,20 @@ enum modes {
 Adafruit_SSD1306 display(SCREEN_WIDTH, SCREEN_HEIGHT, &Wire, OLED_RESET);
 #define NUM_ROWS 5
 
-bool oled_update;
-byte interface;
-byte prev_interface;
 enum interfaces{
     home_inter = 1,
     settings_inter,
     light_inter,
     plug_inter
 };
+bool oled_update;
+byte interface = settings_inter;
+byte prev_interface = home_inter;
+
 byte element_total;
 byte element_selected;
+bool selector = 1;
+int temp;
 bool title_list;
 
 
@@ -55,15 +59,16 @@ bool title_list;
 byte regState[2];
 byte button;
 byte button_pulse;
+
 bool reg_update;
 enum buttons{
     null,
     up,
-    centre,
+    center,
     down,
     bD,
     bC,
     bB,
     bA
 };
-unsigned long int debounce;
+unsigned long int last_millis;
