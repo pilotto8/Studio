@@ -8,7 +8,7 @@ void oledInit(){
     display.setTextColor(SSD1306_WHITE); // Draw white text
     display.display();
 }
-int prova = 3;
+
 void loadInterface(){
     if (interface != prev_interface){
         prev_interface = interface;
@@ -25,6 +25,7 @@ void loadInterface(){
                 defElement(2, "Power plug", plug_inter);
                 defElement(3, "Clock", clock_inter);
                 defElement(4, "Oled", oled_inter);
+                defElement(5, "Prova", &prova, 0, 5);
                 break;
             }
         }

@@ -1,4 +1,4 @@
-const int* address[]{&prova, 0};
+int* address[]{&prova, 0};
 
 void eepromUpdate(int* pointer){
     int i;

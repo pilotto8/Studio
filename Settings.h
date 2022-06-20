@@ -84,3 +84,4 @@ unsigned long int last_millis;
 
 // EEPROM
 #include <EEPROM.h>
+int prova = 3;

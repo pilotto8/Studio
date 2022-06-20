@@ -2,6 +2,8 @@
 #define LUCE 0
 #define OLED 1
 #define RTC 0
+int* NEW_PARAMETER[] = {&prova, 0}; // Just for developing purposes. If there are new parameters just put them here
+
 void setup() {
     Serial.begin(115200);
     pinMode(SRCLK, OUTPUT);
@@ -35,8 +37,13 @@ void setup() {
     rtc.writeSqwPinMode(DS3231_OFF);
     rtc.disableAlarm(2);
     #endif
-    
+
     pushBits();
+    if (NEW_PARAMETER[0] != 0){
+        for(int i = 0; NEW_PARAMETER[i]; i++){ 
+            eepromUpdate(NEW_PARAMETER[i]);
+        }
+    }
     eepromDownload();
 }
 
