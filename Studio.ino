@@ -2,7 +2,7 @@
 #define LUCE 0
 #define OLED 1
 #define RTC 0
-int* NEW_PARAMETER[] = {&prova, 0}; // Just for developing purposes. If there are new parameters just put them here
+int* NEW_PARAMETER[] = {&prova, 0}; // Just for developing purposes. If there are new parameters just put them here one time
 
 void setup() {
     Serial.begin(115200);
@@ -38,17 +38,21 @@ void setup() {
     rtc.disableAlarm(2);
     #endif
 
-    pushBits();
     if (NEW_PARAMETER[0] != 0){
         for(int i = 0; NEW_PARAMETER[i]; i++){ 
             eepromUpdate(NEW_PARAMETER[i]);
         }
     }
     eepromDownload();
+    regState[0] = EEPROM.read(0);
+    regState[1] = EEPROM.read(1);
+    pushBits();
+    for (int i = 4; i < 9; i++){
+        digitalWrite(i - 2, readBits(i));
+    }
 }
 
-#define scrolling_time 10
-#define debounce 50
+
 void loop() {
     #if LUCE
         RGBhandle();

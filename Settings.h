@@ -34,7 +34,9 @@ enum modes {
 #define OLED_RESET -1
 #define SCREEN_ADDRESS 0x3C
 Adafruit_SSD1306 display(SCREEN_WIDTH, SCREEN_HEIGHT, &Wire, OLED_RESET);
-#define NUM_ROWS 5
+
+#define rows 5
+#define scrolling_time 10 // *10 [ms]
 
 enum interfaces{
     home_inter = 1,
@@ -65,6 +67,7 @@ bool title_list;
 // Registers and buttons
 #define CLR(x,y) (x&=(~(1<<y)))
 #define SET(x,y) (x|=(1<<y))
+#define eeprom_offset 2
 byte regState[2];
 byte button;
 byte button_pulse;
@@ -81,6 +84,8 @@ enum buttons{
     bA
 };
 unsigned long int last_millis;
+#define debounce 50
+#define long_press 500
 
 // EEPROM
 #include <EEPROM.h>

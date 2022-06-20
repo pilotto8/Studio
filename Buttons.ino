@@ -38,7 +38,10 @@ void buttonsHandle(){
                         break;
                     }
                     case 4 ... 7:{
-                        pushPlugState(button - 3, 2); /// State 2 means to invert the current state
+                        if (millis() - last_millis >= long_press){
+
+                        }
+                        //pushPlugState(button - 3, 2);
                         break;
                     }
                 }
@@ -47,22 +50,25 @@ void buttonsHandle(){
                 if (button_pulse == 0 && int((millis() - last_millis + debounce) / 10) % scrolling_time == 0){
                     button_pulse = button;
                 }
-                else if (button_pulse){
+                else if (int((millis() - last_millis + debounce) / 10) % scrolling_time != 0){
                     button_pulse = 0;
                 }
             }
         }
     }
     else {
-        last_millis = millis();
         if (button){
+            setBits(9, 15, 0);
+            if (millis() - last_millis < long_press){
+                pushPlugState(button - 3, 2); /// State 2 means to invert the current state
+            }
             button = 0;
             button_pulse = 0;
-            setBits(9, 15, 0);
         }
         if (reg_update){
             pushBits();
             reg_update = 0;
         }
+        last_millis = millis();
     }
 }

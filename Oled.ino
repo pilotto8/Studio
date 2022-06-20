@@ -63,7 +63,6 @@ void defElement(byte number, String name, int* pointer, byte min, byte max){
     element_total++;
 }
 
-#define rows 5
 void interfaceList(){
     int i;
     // Buttons interaction
@@ -83,6 +82,7 @@ void interfaceList(){
             else {
                 interface = element_list[element_selected].interface;
             }
+            button_pulse = 0; // To add on every center command
         }
         else if (button_pulse == up){
             if (selector && element_selected > 0){
@@ -100,7 +100,6 @@ void interfaceList(){
                 temp--;
             }
         }
-        button_pulse = -1;
         oled_update = 1;
     }
 

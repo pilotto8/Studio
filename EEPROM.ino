@@ -4,7 +4,7 @@ void eepromUpdate(int* pointer){
     int i;
     for (i = 0; address[i] != 0; i++){
         if (pointer == address[i]){
-            EEPROM.update(i, *pointer);
+            EEPROM.update(i + eeprom_offset, *pointer);
             parExecutor(i);
             return;
         }
@@ -14,14 +14,16 @@ void eepromUpdate(int* pointer){
 void eepromDownload(){
     int i;
     for (i = 0; address[i] != 0; i++){
-        *address[i] = EEPROM.read(i);
+        *address[i] = EEPROM.read(i + eeprom_offset);
         parExecutor(i);
     }
 }
 
 void parExecutor(int i){ 
+    int c;
     switch (i){
-        case 0:{
+        case 2:{
+            
             break;
         }
     }
