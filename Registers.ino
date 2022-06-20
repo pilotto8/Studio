@@ -1,25 +1,3 @@
-byte findButton(){
-    byte i = 9;
-    byte c = 4;
-    
-    setBits(13, 15, 1);
-    while(c >= 1){
-        setBits(i, i + c - 1, 0);
-        pushBits();
-        setBits(i, i + c - 1, 1);
-        if (digitalRead(DATA_IN)){
-            i += c;
-        }
-        c /= 2;
-    }
-    if (!(i % 2)){
-        setBits(i, i + 1, 0);
-        pushBits();
-    }
-    reg_update = 0;
-    return i - 8;
-}
-
 void pushBits(){
     CLR(PORTD, 7);
     shiftOut(DATA_OUT, RCLK, MSBFIRST, regState[0]);

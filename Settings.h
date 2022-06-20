@@ -1,4 +1,4 @@
-#include <stdio.h>
+//#include <stdio.h>
 // LEDs
 #include <FastLED.h>
 #define NUM_LEDS    100
@@ -25,7 +25,7 @@ enum modes {
 #define DATA_OUT 11
 #define DATA_IN 8
 
-//Oled
+// Oled
 #include <Adafruit_GFX.h>
 #include <Adafruit_SSD1306.h>
 
@@ -40,12 +40,21 @@ enum interfaces{
     home_inter = 1,
     settings_inter,
     light_inter,
-    plug_inter
+    plug_inter,
+    clock_inter,
+    oled_inter
 };
 bool oled_update;
 byte interface = settings_inter;
 byte prev_interface = home_inter;
 
+struct {
+    String name;
+    int* pointer;
+    byte interface;
+    byte min;
+    byte max;
+}element_list[10];
 byte element_total;
 byte element_selected;
 bool selector = 1;
@@ -53,7 +62,7 @@ int temp;
 bool title_list;
 
 
-//Registers
+// Registers and buttons
 #define CLR(x,y) (x&=(~(1<<y)))
 #define SET(x,y) (x|=(1<<y))
 byte regState[2];
@@ -72,3 +81,6 @@ enum buttons{
     bA
 };
 unsigned long int last_millis;
+
+// EEPROM
+#include <EEPROM.h>
