@@ -124,10 +124,10 @@ void interfaceList(){
             }
         }
         if (selector){
-            display.drawCircle(0, (64 / rows) * (element_selected % rows) + 4, 2, SSD1306_WHITE);
+            display.drawCircle(3, (64 / rows) * (element_selected % rows) + 3, 2, SSD1306_WHITE);
         }
         else {
-            display.fillCircle(0, (64 / rows) * (element_selected % rows) + 4, 2, SSD1306_WHITE);
+            display.fillCircle(3, (64 / rows) * (element_selected % rows) + 3, 2, SSD1306_WHITE);
         }
         if (title_list && element_selected / rows == 0){
             display.drawFastHLine(0, 64 / rows - 4, 128, SSD1306_WHITE);

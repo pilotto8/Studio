@@ -20,7 +20,6 @@ void eepromDownload(){
 }
 
 void parExecutor(int i){ 
-    int c;
     switch (i){
         case 2:{
             

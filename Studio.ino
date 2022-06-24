@@ -1,8 +1,8 @@
 #include "Settings.h"
 #define LUCE 0
-#define OLED 1
+#define OLED !LUCE
 #define RTC 0
-int* NEW_PARAMETER[] = {&prova, 0}; // Just for developing purposes. If there are new parameters just put them here one time
+int* NEW_PARAMETER[] = {0}; // Just for developing purposes. If there are new parameters just put them here one time
 
 void setup() {
     Serial.begin(115200);
