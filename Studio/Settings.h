@@ -1,4 +1,9 @@
-//#include <stdio.h>
+// Software serial
+#include <SoftwareSerial.h>
+SoftwareSerial mySerial(10, 11);//// da cambiare i pin
+
+
+
 // LEDs
 #include <FastLED.h>
 #define NUM_LEDS    100

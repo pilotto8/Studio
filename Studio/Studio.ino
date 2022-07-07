@@ -1,5 +1,5 @@
 #include "Settings.h"
-#define LUCE 0
+#define LUCE 1
 #define OLED !LUCE
 #define RTC 0
 int* NEW_PARAMETER[] = {0}; // Just for developing purposes. If there are new parameters just put them here one time
