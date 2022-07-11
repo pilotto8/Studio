@@ -1,8 +1,6 @@
 // Software serial
 #include <SoftwareSerial.h>
-SoftwareSerial mySerial(10, 11);//// da cambiare i pin
-
-
+SoftwareSerial mySerial(9, 6);//// da cambiare i pin
 
 // LEDs
 #include <FastLED.h>
