@@ -1,8 +1,0 @@
-void setupPalette(){
-   
-}
-
-
-void RGBhandle(){
-
-}
