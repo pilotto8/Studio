@@ -1,6 +1,6 @@
-#include "Settings.h"7
+#include "Settings.h"
 #define OLED 1
-#define RTC 0
+#define RTC 1
 int* NEW_PARAMETER[] = {0}; // Just for developing purposes. If there are new parameters just put them here one time
 
 void setup() {
@@ -18,7 +18,12 @@ void setup() {
     pinMode(5, OUTPUT);
     pinMode(6, OUTPUT);
     
- #if RTC
+    #if OLED
+    oledInit();
+    #endif
+
+    
+    #if RTC
     rtc.begin();
     if (rtc.lostPower()) {
         rtc.adjust(DateTime(F(__DATE__), F(__TIME__)));
@@ -30,9 +35,6 @@ void setup() {
     rtc.disableAlarm(2);
     #endif
 
-    #if OLED
-    oledInit();
-    #endif
     
     if (NEW_PARAMETER[0] != 0){
         for(int i = 0; NEW_PARAMETER[i]; i++){ 

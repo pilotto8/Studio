@@ -1,6 +1,6 @@
 // Software serial
-#include <SoftwareSerial.h>
-SoftwareSerial bus(3, 4); // RX, TX
+/*#include <SoftwareSerial.h>
+SoftwareSerial bus(3, 4); // RX, TX*/
 
 // LEDs
 #define NO_CLOCK_CORRECTION 1

@@ -6,17 +6,28 @@ byte index;
 
 
 void setup() {
-  bus.begin(4800);
+  //bus.begin(4800);
   FastLED.addLeds<LED_TYPE, LED_PIN, COLOR_ORDER>(leds, NUM_LEDS).setCorrection( TypicalLEDStrip );
   FastLED.setBrightness(BRIGHTNESS);
-  for (int i = 0; i < 100; i++){
-    leds[i] = CHSV(HUE_RED, 255, 100);
+  for (float offset = -1; offset <= 2; offset += 0.075){
+    byte i;
+    float c;
+    for(i = 0, c = 4.712; i < 100; i++, c += 0.314){
+      float brightness = offset + sin(c);
+      if (brightness < 0){
+        brightness = 0;
+      }
+      else if (brightness > 1){
+        brightness = 1;
+      }
+      leds[i] = CHSV(28, 170, brightness * 255);
+    }
+    FastLED.show();
   }
-  FastLED.show();
 }
 
 void loop() {
-  if (bus.available()){
+  /*if (bus.available()){
     while (bus.available()) {
       index = bus.read();
       if (index >= 100){
@@ -29,5 +40,6 @@ void loop() {
         FastLED.delay(12);
       }
     }
-  }
+  }*/
+  
 }

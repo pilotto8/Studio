@@ -16,6 +16,7 @@ void loadInterface(){
         element_total = 0;
         switch (interface){
             case home_inter:{
+                display.setTextSize(4);
                 break;
             }
             case settings_inter:{
@@ -40,6 +41,22 @@ void loadInterface(){
     //Running interface
     switch (interface){
         case home_inter:{
+            if (millis() - update_clock >= 1000){
+                update_clock = millis();
+                getTime();
+                display.clearDisplay();
+                display.setCursor(5, 10);
+                if (now.hour() < 10){
+                    display.print(0);
+                }
+                display.print(now.hour());
+                display.print(':');
+                if (now.minute() < 10){
+                    display.print(0);
+                }
+                display.print(now.minute());
+                display.display();
+            }
             break;
         }
         default:{

@@ -1,6 +1,6 @@
 // Software serial
 #include <SoftwareSerial.h>
-SoftwareSerial bus(9, 12);
+//SoftwareSerial bus(9, 12);
 
 // PIN
 #define RCLK 10
@@ -49,6 +49,10 @@ bool title_list;
 // RTC
 #include <RTClib.h>
 RTC_DS3231 rtc;
+DateTime now;
+byte hour;
+byte minute;
+unsigned long int update_clock;
 
 // Registers and buttons
 #define CLR(x,y) (x&=(~(1<<y)))
