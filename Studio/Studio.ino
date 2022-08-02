@@ -25,9 +25,6 @@ void setup() {
     
     #if RTC
     rtc.begin();
-    if (rtc.lostPower()) {
-        rtc.adjust(DateTime(F(__DATE__), F(__TIME__)));
-    }
     rtc.disable32K();
     rtc.clearAlarm(1);
     rtc.clearAlarm(2);

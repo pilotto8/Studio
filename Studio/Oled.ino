@@ -26,7 +26,7 @@ void loadInterface(){
                 defElement(2, "Power plug", plug_inter);
                 defElement(3, "Clock", clock_inter);
                 defElement(4, "Oled", oled_inter);
-                defElement(5, "Prova", &prova, 0, 5);
+                defElement(5, "Prova", &prova, 0, 1);
                 break;
             }
         }
@@ -130,10 +130,20 @@ void interfaceList(){
             display.setCursor(100, (64 / rows) * i);
             if (element_list[element_selected - (element_selected % rows) + i].interface == 0){
                 if (!selector && i == element_selected % rows){
-                    display.print(temp);
+                    if (element_list[element_selected - (element_selected % rows) + i].max == 1 && element_list[element_selected - (element_selected % rows) + i].min == 0){
+                        display.print(temp ? "ON" : "OFF");
+                    }
+                    else {
+                        display.print(temp);
+                    }
                 }
                 else {
-                    display.print(*element_list[element_selected - (element_selected % rows) + i].pointer);
+                    if (element_list[element_selected - (element_selected % rows) + i].max == 1 && element_list[element_selected - (element_selected % rows) + i].min == 0){
+                        display.print(*element_list[element_selected - (element_selected % rows) + i].pointer ? "ON" : "OFF");
+                    }
+                    else {
+                        display.print(*element_list[element_selected - (element_selected % rows) + i].pointer);
+                    }
                 }
             }
             else if ((title_list && element_selected / rows == 0) && i != 0 || !(element_selected / rows == 0 && title_list)){ 

@@ -7,3 +7,11 @@ void pushPlugState(byte plug, byte state){
     EEPROM.update(0, regState[0]);
     EEPROM.update(1, regState[1]);
 }
+
+struct {
+    bool state;
+    byte plug;
+    byte hour;
+    byte minute;
+    byte days;
+}power_alarm[20];

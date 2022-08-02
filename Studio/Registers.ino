@@ -16,7 +16,7 @@ void setBits(byte a, byte b, bool bit){
     byte temp[2] = { 0 };
     byte i;
     for (i = 0; i < 16; i++){
-        temp[i / 8]<<=1;
+        temp[i / 8] <<= 1;
         if (i >= a && i <= b){
             temp[i / 8]++;
         }
