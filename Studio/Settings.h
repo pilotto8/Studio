@@ -53,6 +53,7 @@ DateTime now;
 byte hour;
 byte minute;
 unsigned long int update_clock;
+bool update_clock_data = 0;
 
 // Registers and buttons
 #define CLR(x,y) (x&=(~(1<<y)))

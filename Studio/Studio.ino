@@ -29,7 +29,8 @@ void setup() {
     rtc.clearAlarm(1);
     rtc.clearAlarm(2);
     rtc.writeSqwPinMode(DS3231_OFF);
-    rtc.disableAlarm(2);
+    //rtc.disableAlarm(2);
+    rtc.setAlarm2(rtc.now(),DS3231_A2_PerMinute);
     #endif
 
     
@@ -53,5 +54,13 @@ void loop() {
 
     #if OLED
         loadInterface();
+    #endif
+
+    #if RTC
+        if (millis() - update_clock >= 1000){
+            update_clock = millis();
+            checkTimer();
+            update_clock_data = 1;
+        }
     #endif
 }

@@ -69,6 +69,7 @@ void adjustTimer(){
 
 void setTimer(){
     if (num_timer > 0){
+        getTime();
         rtc.setAlarm1(rtc.now() + TimeSpan(alarm_timer[0].time_span * 60),DS3231_A1_Date);
     }
 }
@@ -86,14 +87,13 @@ void deleteTimer(){
 }
 
 void checkTimer(){
-    byte i;
     if (rtc.alarmFired(2)) {
         rtc.clearAlarm(2);
         adjustTimer();
     }
     if (rtc.alarmFired(1)) {
         rtc.clearAlarm(1);
-        for (i = 0; i < 4; i++){
+        for (byte i = 0; i < 4; i++){
             if (readBits(&alarm_timer[0].plugs, i)){
                 pushPlugState(i, 2);
             }
