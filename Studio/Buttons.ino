@@ -61,6 +61,7 @@ void buttonsHandle(){
             setBits(9, 15, 0);
             if (millis() - last_millis < long_press){
                 pushPlugState(button - 3, 2); /// State 2 means to invert the current state
+                savePlugState();
             }
             button = 0;
             button_pulse = 0;

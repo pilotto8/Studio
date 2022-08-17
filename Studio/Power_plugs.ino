@@ -4,6 +4,9 @@ void pushPlugState(byte plug, byte state){
     }
     setBits(plug + 4, state);
     digitalWrite(plug + 2, state);
+}
+
+void savePlugState(){
     EEPROM.update(0, regState[0]);
     EEPROM.update(1, regState[1]);
 }
