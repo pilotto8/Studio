@@ -1,9 +1,9 @@
 void pushPlugState(byte plug, byte state){
     if (state == 2){
-        state = !readBits(plug + 4);
+        state = !readBits(plug + 5);
     }
-    setBits(plug + 4, state);
-    digitalWrite(plug + 2, state);
+    setBits(plug + 5, state);
+    digitalWrite(plug + 3, state);
 }
 
 void savePlugState(){

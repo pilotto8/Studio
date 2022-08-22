@@ -3,33 +3,6 @@ void getTime(){
 }
 
 
-void setBits(byte* byt, byte a, bool bit){
-    byte temp = 1;
-    temp <<= a; 
-    if (bit){
-        *byt |= temp;
-    }
-    else {
-        *byt -= (*byt & temp);
-    }
-}
-
-
-bool readBits(byte* byt, byte a){
-    byte temp = *byt << a;
-    if (temp >> 7){
-        return 1;
-    }
-    return 0;
-}
-
-struct {
-    byte time_span;
-    byte plugs;
-} alarm_timer[10];
-
-byte num_timer;
-
 void addTimer(byte time_span, byte plugs){
     byte i, c;
     if (num_timer >= 10){

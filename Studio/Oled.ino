@@ -29,6 +29,12 @@ void loadInterface(){
                 defElement(5, F("Prova"), &prova, 0, 1);
                 break;
             }
+            case alarm_inter:{
+                
+                temp_time_span = 1;//5
+                //blink_reg_millis = millis();
+                break;
+            }
         }
         if (title_list){
             element_selected = 1;
@@ -41,35 +47,92 @@ void loadInterface(){
     //Running interface
     switch (interface){
         case home_inter:{
+            if (button_pulse != 0 && button_pulse != -1){
+                if (button_pulse == center){
+                    interface = settings_inter;
+                    button_pulse = 0;
+                }
+            }
+
             if (update_clock_data){
                 update_clock_data = 0;
-                getTime();
+                oled_update = 1;
+            }
+
+            if (oled_update){
                 display.clearDisplay();
-                display.setTextSize(1);
-                display.setCursor(5, 0);
-                if (now.day() < 10){
-                    display.print(0);
-                }
-                display.print(now.day());
-                display.print('/');
-                if (now.month() < 10){
-                    display.print(0);
-                }
-                display.print(now.month());
+                oled_update = 0;
+                getTime();
 
                 display.setTextSize(4);
                 display.setCursor(5, 10);
-                if (now.hour() < 10){
-                    display.print(0);
-                }
-                display.print(now.hour());
+                printZero(now.hour());
                 display.print(':');
-                if (now.minute() < 10){
-                    display.print(0);
+                printZero(now.minute());
+
+                display.setTextSize(1);
+                display.setCursor(5, 0);
+                printZero(now.day());
+                display.print('/');
+                printZero(now.month());
+
+                if (num_timer > 0){
+                    
+                    for (byte i = 0; i < num_timer && i < 3; i++){
+                        display.setCursor(5, 40 + 7 * i);
+                        display.print(alarm_timer[i].time_span / 60);
+                        display.print(F("h "));
+                        display.print(alarm_timer[i].time_span % 60);
+                        display.print(F("min"));
+                        printPlugBalls(90, 42 + 7 * i, i);
+                    }
+                    
                 }
-                display.print(now.minute());
+                
                 display.display();
             }
+            break;
+        }
+        case alarm_inter:{
+            if (button_pulse != 0 && button_pulse != -1){
+                if (button_pulse == center){
+                    interface = home_inter;
+                    button_pulse = 0;
+
+                    addTimer(temp_time_span, temp_plugs);
+                    resume_registers();
+                }
+
+                else if (button_pulse == up){
+                    temp_time_span += 5;
+                }
+                else if (button_pulse == down && temp_time_span > 0){
+                    temp_time_span -= 5;
+                }
+                oled_update = 1;
+            }
+
+            if (oled_update){
+                display.clearDisplay();
+                oled_update = 0;
+
+                display.setTextSize(4);
+                display.setCursor(5, 10);
+                display.print(temp_time_span);
+
+                display.setTextSize(2);
+                display.print(F("min."));
+                
+                display.setTextSize(1);
+
+                display.display();
+            }
+
+            if (temp_plugs == 0){
+                interface = home_inter;
+                resume_registers();
+            }
+
             break;
         }
         default:{
@@ -174,4 +237,24 @@ void interfaceList(){
         }
         display.display();
     }
+}
+
+void printZero(byte value){
+    if (value < 10){
+        display.print(0);
+    }
+    display.print(value);
+}
+
+void printPlugBalls(byte x, byte y, byte alarm){
+    byte i;
+    for (i = 0; i < 4; i++){
+        if (readBits(&alarm_timer[alarm].plugs, i)){
+            display.fillCircle(x + 5 * i, y, 2, SSD1306_WHITE);
+        }
+        else{
+            display.drawCircle(x + 5 * i, y, 2, SSD1306_WHITE);
+        }
+    }
+    
 }

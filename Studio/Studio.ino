@@ -33,6 +33,7 @@ void setup() {
     rtc.writeSqwPinMode(DS3231_OFF);
     //rtc.disableAlarm(2);
     rtc.setAlarm2(rtc.now(),DS3231_A2_PerMinute);
+    //rtc.adjust(DateTime(F(__DATE__), F(__TIME__)));
     #endif
 
     
