@@ -1,7 +1,7 @@
-int* address[]{&prova, 0};
+byte* address[]{&prova, 0};
 
-void eepromUpdate(int* pointer){
-    int i;
+void eepromUpdate(byte* pointer){
+    byte i;
     for (i = 0; address[i] != 0; i++){
         if (pointer == address[i]){
             EEPROM.update(i + eeprom_offset, *pointer);
@@ -12,14 +12,14 @@ void eepromUpdate(int* pointer){
 }
 
 void eepromDownload(){
-    int i;
+    byte i;
     for (i = 0; address[i] != 0; i++){
         *address[i] = EEPROM.read(i + eeprom_offset);
         parExecutor(i);
     }
 }
 
-void parExecutor(int i){ 
+void parExecutor(byte i){ 
     switch (i){
         case 2:{
             

@@ -3,6 +3,7 @@
 //SoftwareSerial bus(9, 12);
 
 // PIN
+// Taken: 3,4,5,6,7,8,9,10,11,12
 #define RCLK 10
 #define SRCLK 7
 #define DATA_OUT 11
@@ -35,7 +36,7 @@ byte prev_interface = home_inter;
 
 struct {
     String name;
-    int* pointer;
+    byte* pointer;
     byte interface;
     byte min;
     byte max;
@@ -80,4 +81,4 @@ unsigned long int last_millis;
 
 // EEPROM
 #include <EEPROM.h>
-int prova = 3;
+byte prova = 3;

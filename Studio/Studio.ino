@@ -1,7 +1,7 @@
 #include "Settings.h"
 #define OLED 1
 #define RTC 1
-int* NEW_PARAMETER[] = {0}; // Just for developing purposes. If there are new parameters just put them here one time
+byte* NEW_PARAMETER[] = {0}; // Just for developing purposes. If there are new parameters just put them here one time
 
 void setup() {
     Serial.begin(115200);
@@ -17,6 +17,8 @@ void setup() {
     pinMode(4, OUTPUT);
     pinMode(5, OUTPUT);
     pinMode(6, OUTPUT);
+
+    pinMode(2, INPUT_PULLUP);
     
     #if OLED
     oledInit();
@@ -46,6 +48,8 @@ void setup() {
     for (int i = 4; i < 9; i++){
         digitalWrite(i - 2, readBits(i));
     }
+
+    update_clock = millis() + 500;
 }
 
 
@@ -57,7 +61,7 @@ void loop() {
     #endif
 
     #if RTC
-        if (millis() - update_clock >= 1000){
+        if (millis() - update_clock >= 500){
             update_clock = millis();
             checkTimer();
             update_clock_data = 1;

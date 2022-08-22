@@ -21,12 +21,12 @@ void loadInterface(){
             }
             case settings_inter:{
                 title_list = 1;
-                defElement(0, "Settings", home_inter);
-                defElement(1, "Light", light_inter);
-                defElement(2, "Power plug", plug_inter);
-                defElement(3, "Clock", clock_inter);
-                defElement(4, "Oled", oled_inter);
-                defElement(5, "Prova", &prova, 0, 1);
+                defElement(0, F("Settings"), home_inter);
+                defElement(1, F("Light"), light_inter);
+                defElement(2, F("Power plug"), plug_inter);
+                defElement(3, F("Clock"), clock_inter);
+                defElement(4, F("Oled"), oled_inter);
+                defElement(5, F("Prova"), &prova, 0, 1);
                 break;
             }
         }
@@ -84,7 +84,7 @@ void defElement(byte number, String name, byte interface){
     element_list[number].interface = interface;
     element_total++;
 }
-void defElement(byte number, String name, int* pointer, byte min, byte max){
+void defElement(byte number, String name, byte* pointer, byte min, byte max){
     element_list[number].name = name;
     element_list[number].pointer = pointer;
     element_list[number].min = min;
@@ -94,7 +94,7 @@ void defElement(byte number, String name, int* pointer, byte min, byte max){
 }
 
 void interfaceList(){
-    int i;
+    byte i;
     // Buttons interaction
     if (button_pulse != 0 && button_pulse != -1){
         if (button_pulse == center){
