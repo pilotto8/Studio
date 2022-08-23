@@ -51,7 +51,7 @@ bool readBits(byte a){
 
 void setBits(byte* byt, byte a, byte bit){
     byte temp = 1;
-    temp <<= a; 
+    temp <<= 7 - a; 
     if (bit == 1){
         *byt |= temp;
     }
@@ -78,12 +78,10 @@ void freeze_registers(){
     regState[0] = 0;
     regState[1] = 0;
     reg_update = 1;
-    //pushBits();
 }
 
 void resume_registers(){
     regState[0] = temp_regState[0];
     regState[1] = temp_regState[1];
     reg_update = 1;
-    //pushBits();
 }

@@ -1,4 +1,6 @@
-byte* address[]{&prova, 0};
+byte* address[]{
+    &prova, &temp_minute, &temp_hour, &temp_day, &temp_month, &temp_year
+    ,0};
 
 void eepromUpdate(byte* pointer){
     byte i;
@@ -21,8 +23,8 @@ void eepromDownload(){
 
 void parExecutor(byte i){ 
     switch (i){
-        case 2:{
-            
+        case 1 ... 5:{
+            rtc.adjust(DateTime(temp_year, temp_month, temp_day, temp_hour, temp_minute, 0));
             break;
         }
     }

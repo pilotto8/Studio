@@ -19,6 +19,7 @@ void addTimer(byte time_span, byte plugs){
         if (c == 0){
             alarm_timer[c].time_span = time_span;
             alarm_timer[c].plugs = plugs;
+            rtc.clearAlarm(1);
             setTimer();
         }
         else {
@@ -36,15 +37,16 @@ void addTimer(byte time_span, byte plugs){
 void adjustTimer(){
     byte i;
     for (i = 0; i < 10 && i < num_timer; i++){
-        alarm_timer[i].time_span--;
+        if (alarm_timer[i].time_span > 0){
+            alarm_timer[i].time_span--;
+        }
     }
 }
 
 void setTimer(){
-    if (num_timer > 0){
-        getTime();
-        rtc.setAlarm1(rtc.now() + TimeSpan(alarm_timer[0].time_span * 60),DS3231_A1_Date);
-    }
+    getTime();
+    rtc.setAlarm1(rtc.now() + TimeSpan(alarm_timer[0].time_span * 60), DS3231_A1_Date);
+    Serial.println("alarm_timer");
 }
 
 void deleteTimer(){
@@ -59,20 +61,34 @@ void deleteTimer(){
     num_timer--;
 }
 
+byte prev_minute;
+
 void checkTimer(){
-    if (rtc.alarmFired(2)) {
-        rtc.clearAlarm(2);
-        adjustTimer();
-    }
     if (rtc.alarmFired(1)) {
         rtc.clearAlarm(1);
+        Serial.println("chitemmuerte");
         for (byte i = 0; i < 4; i++){
             if (readBits(&alarm_timer[0].plugs, i)){
                 pushPlugState(i, 2);
             }
         }
         deleteTimer();
-        setTimer();
+        if (num_timer > 0){
+            setTimer();
+        }
         savePlugState();
     }
+
+    if (now.minute() != prev_minute) {
+        prev_minute = now.minute();
+        adjustTimer();
+    }
+}
+
+void saveTempData(){
+    temp_minute = now.minute();
+    temp_hour = now.hour();
+    temp_day = now.day();
+    temp_month = now.month();
+    temp_year = now.year();
 }

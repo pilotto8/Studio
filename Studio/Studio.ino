@@ -1,7 +1,12 @@
 #include "Settings.h"
 #define OLED 1
 #define RTC 1
-byte* NEW_PARAMETER[] = {0}; // Just for developing purposes. If there are new parameters just put them here one time
+byte* NEW_PARAMETER[] = {
+    
+0}; // Just for developing purposes. If there are new parameters just put them here one time
+
+// Debug flags
+#define clear_registers 0
 
 void setup() {
     Serial.begin(115200);
@@ -31,14 +36,14 @@ void setup() {
     rtc.clearAlarm(1);
     rtc.clearAlarm(2);
     rtc.writeSqwPinMode(DS3231_OFF);
-    //rtc.disableAlarm(2);
-    rtc.setAlarm2(rtc.now(),DS3231_A2_PerMinute);
+    rtc.disableAlarm(2);
+    //rtc.setAlarm2(rtc.now(),DS3231_A2_PerMinute);
     //rtc.adjust(DateTime(F(__DATE__), F(__TIME__)));
     #endif
 
     
     if (NEW_PARAMETER[0] != 0){
-        for(int i = 0; NEW_PARAMETER[i]; i++){ 
+        for(byte i = 0; NEW_PARAMETER[i]; i++){ 
             eepromUpdate(NEW_PARAMETER[i]);
         }
     }
@@ -46,11 +51,22 @@ void setup() {
     regState[0] = EEPROM.read(0);
     regState[1] = EEPROM.read(1);
     pushBits();
-    for (int i = 4; i < 9; i++){
+    for (byte i = 4; i < 9; i++){
         digitalWrite(i - 2, readBits(i));
     }
 
-    update_clock = millis() + 500;
+    update_clock = millis() + 100;
+
+    #if clear_registers
+    regState[0] = 0;
+    regState[1] = 0;
+    EEPROM.update(0, regState[0]);
+    EEPROM.update(1, regState[1]);
+    pushBits();
+    for (byte i = 0; i < 4; i++){
+        digitalWrite(i + 3, 0);
+    }
+    #endif
 }
 
 
@@ -62,10 +78,14 @@ void loop() {
     #endif
 
     #if RTC
-        if (millis() - update_clock >= 500){
+        if (millis() - update_clock >= 100){
             update_clock = millis();
             checkTimer();
             update_clock_data = 1;
+
+            if (interface == clock_inter){
+                saveTempData();
+            }
         }
     #endif
 }

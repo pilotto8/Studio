@@ -29,10 +29,22 @@ void loadInterface(){
                 defElement(5, F("Prova"), &prova, 0, 1);
                 break;
             }
+
+            
+            case clock_inter:{
+                saveTempData();
+                title_list = 1;
+                defElement(0, F("Clock"), settings_inter);
+                defElement(1, F("Minute"), &temp_minute, 0, 59);
+                defElement(2, F("Hour"), &temp_hour, 0, 23);
+                defElement(3, F("Day"), &temp_day, 1, 31);
+                defElement(4, F("Month"), &temp_month, 1, 12);
+                defElement(5, F("Year"), &temp_year, 0, 99);
+                break;
+            }
+
             case alarm_inter:{
-                
-                temp_time_span = 1;//5
-                //blink_reg_millis = millis();
+                temp_time_span = 1;
                 break;
             }
         }
@@ -79,20 +91,21 @@ void loadInterface(){
                 if (num_timer > 0){
                     
                     for (byte i = 0; i < num_timer && i < 3; i++){
-                        display.setCursor(5, 40 + 7 * i);
-                        display.print(alarm_timer[i].time_span / 60);
-                        display.print(F("h "));
+                        display.setCursor(5, 40 + 8 * i);
+                        if (alarm_timer[i].time_span >= 60){
+                            display.print(alarm_timer[i].time_span / 60);
+                            display.print(F("h "));
+                        }
                         display.print(alarm_timer[i].time_span % 60);
                         display.print(F("min"));
-                        printPlugBalls(90, 42 + 7 * i, i);
-                    }
-                    
+                        printPlugBalls(90, 42 + 8 * i, i);
+                    }   
                 }
-                
                 display.display();
             }
             break;
         }
+
         case alarm_inter:{
             if (button_pulse != 0 && button_pulse != -1){
                 if (button_pulse == center){
@@ -104,10 +117,10 @@ void loadInterface(){
                 }
 
                 else if (button_pulse == up){
-                    temp_time_span += 5;
+                    temp_time_span += 1;
                 }
                 else if (button_pulse == down && temp_time_span > 0){
-                    temp_time_span -= 5;
+                    temp_time_span -= 1;
                 }
                 oled_update = 1;
             }
@@ -249,11 +262,11 @@ void printZero(byte value){
 void printPlugBalls(byte x, byte y, byte alarm){
     byte i;
     for (i = 0; i < 4; i++){
-        if (readBits(&alarm_timer[alarm].plugs, i)){
-            display.fillCircle(x + 5 * i, y, 2, SSD1306_WHITE);
+        if (readBits(&alarm_timer[alarm].plugs, 3 - i)){
+            display.fillCircle(x + 6 * i, y, 2, SSD1306_WHITE);
         }
         else{
-            display.drawCircle(x + 5 * i, y, 2, SSD1306_WHITE);
+            display.drawCircle(x + 6 * i, y, 2, SSD1306_WHITE);
         }
     }
     

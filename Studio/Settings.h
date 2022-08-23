@@ -66,6 +66,12 @@ byte num_timer;
 byte temp_time_span;
 byte temp_plugs;
 
+byte temp_minute;
+byte temp_hour;
+byte temp_day;
+byte temp_month;
+byte temp_year;
+
 // Registers and buttons
 #define CLR(x,y) (x&=(~(1<<y)))
 #define SET(x,y) (x|=(1<<y))
