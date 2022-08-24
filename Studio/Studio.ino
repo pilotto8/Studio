@@ -55,7 +55,7 @@ void setup() {
         digitalWrite(i - 2, readBits(i));
     }
 
-    update_clock = millis() + 100;
+    update_clock = millis() + 200;
 
     #if clear_registers
     regState[0] = 0;
@@ -78,14 +78,10 @@ void loop() {
     #endif
 
     #if RTC
-        if (millis() - update_clock >= 100){
+        if (millis() - update_clock >= 200){
             update_clock = millis();
             checkTimer();
             update_clock_data = 1;
-
-            if (interface == clock_inter){
-                saveTempData();
-            }
         }
     #endif
 }

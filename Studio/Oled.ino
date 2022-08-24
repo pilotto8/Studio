@@ -21,21 +21,27 @@ void loadInterface(){
             }
             case settings_inter:{
                 title_list = 1;
-                defElement(0, F("Settings"), home_inter);
+                defElement(0, F("Setting"), home_inter);
                 defElement(1, F("Light"), light_inter);
-                defElement(2, F("Power plug"), plug_inter);
+                defElement(2, F("Plugs"), plug_inter);
                 defElement(3, F("Clock"), clock_inter);
-                defElement(4, F("Oled"), oled_inter);
-                defElement(5, F("Prova"), &prova, 0, 1);
                 break;
             }
 
+            case plug_inter:{
+                title_list = 1;
+                defElement(0, F("Plug"), settings_inter);
+                /*defElement(1, F("Num"), );
+                defElement(2, F("Limit"));
+                defElement(3, F("Trigg"));*/
+                break;
+            }
             
             case clock_inter:{
                 saveTempData();
                 title_list = 1;
                 defElement(0, F("Clock"), settings_inter);
-                defElement(1, F("Minute"), &temp_minute, 0, 59);
+                defElement(1, F("Min"), &temp_minute, 0, 59);
                 defElement(2, F("Hour"), &temp_hour, 0, 23);
                 defElement(3, F("Day"), &temp_day, 1, 31);
                 defElement(4, F("Month"), &temp_month, 1, 12);
@@ -84,6 +90,7 @@ void loadInterface(){
 
                 display.setTextSize(1);
                 display.setCursor(5, 0);
+                //display.print(days[now.dayOfTheWeek()]);
                 printZero(now.day());
                 display.print('/');
                 printZero(now.month());
@@ -116,11 +123,11 @@ void loadInterface(){
                     resume_registers();
                 }
 
-                else if (button_pulse == up){
-                    temp_time_span += 1;
+                else if (button_pulse == up&& temp_time_span < 255){
+                    temp_time_span++;
                 }
-                else if (button_pulse == down && temp_time_span > 0){
-                    temp_time_span -= 1;
+                else if (button_pulse == down && temp_time_span > 1){
+                    temp_time_span--;
                 }
                 oled_update = 1;
             }
@@ -130,12 +137,15 @@ void loadInterface(){
                 oled_update = 0;
 
                 display.setTextSize(4);
-                display.setCursor(5, 10);
+                display.setCursor(20, 25);
                 display.print(temp_time_span);
 
                 display.setTextSize(2);
-                display.print(F("min."));
+                display.print(F("min"));
                 
+                display.setCursor(40, 0);
+                display.print(F("Timer"));
+
                 display.setTextSize(1);
 
                 display.display();

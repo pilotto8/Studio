@@ -28,7 +28,6 @@ enum interfaces{
     light_inter,
     plug_inter,
     clock_inter,
-    oled_inter,
     alarm_inter
 };
 bool oled_update;
@@ -47,6 +46,7 @@ byte element_selected;
 bool selector = 1;
 int temp;
 bool title_list;
+
 
 // RTC
 #include <RTClib.h>
@@ -71,6 +71,8 @@ byte temp_hour;
 byte temp_day;
 byte temp_month;
 byte temp_year;
+
+//const char *days[] = {"Dom ", "Lun ", "Mar ", "Mer ", "Gio ", "Ven ", "Sab "};
 
 // Registers and buttons
 #define CLR(x,y) (x&=(~(1<<y)))
@@ -99,4 +101,3 @@ unsigned long int blink_reg_millis;
 
 // EEPROM
 #include <EEPROM.h>
-byte prova = 3;

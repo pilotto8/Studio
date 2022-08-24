@@ -23,7 +23,7 @@ void addTimer(byte time_span, byte plugs){
             setTimer();
         }
         else {
-            for (i = num_timer - 1; i > c + 1; i--){
+            for (i = num_timer; i >= c; i--){
                 alarm_timer[i + 1] = alarm_timer[i];
             }
             alarm_timer[c].time_span = time_span;
@@ -46,7 +46,6 @@ void adjustTimer(){
 void setTimer(){
     getTime();
     rtc.setAlarm1(rtc.now() + TimeSpan(alarm_timer[0].time_span * 60), DS3231_A1_Date);
-    Serial.println("alarm_timer");
 }
 
 void deleteTimer(){
@@ -64,9 +63,9 @@ void deleteTimer(){
 byte prev_minute;
 
 void checkTimer(){
+    getTime();
     if (rtc.alarmFired(1)) {
         rtc.clearAlarm(1);
-        Serial.println("chitemmuerte");
         for (byte i = 0; i < 4; i++){
             if (readBits(&alarm_timer[0].plugs, i)){
                 pushPlugState(i, 2);
@@ -82,6 +81,11 @@ void checkTimer(){
     if (now.minute() != prev_minute) {
         prev_minute = now.minute();
         adjustTimer();
+
+        if (interface == clock_inter){ // Just for design purposes
+            saveTempData();
+            oled_update = 1;
+        }
     }
 }
 
@@ -90,5 +94,5 @@ void saveTempData(){
     temp_hour = now.hour();
     temp_day = now.day();
     temp_month = now.month();
-    temp_year = now.year();
+    temp_year = now.year() - 2000;
 }

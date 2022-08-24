@@ -2,7 +2,12 @@ void pushPlugState(byte plug, byte state){
     if (state == 2){
         state = !readBits(plug + 5);
     }
-    setBits(plug + 5, state);
+    if (interface != alarm_inter){
+        setBits(plug + 5, state);
+    }
+    else {
+        setBits(&temp_regState[(plug + 5) / 8], (plug + 5) % 8, state);
+    }
     digitalWrite(plug + 3, state);
 }
 
