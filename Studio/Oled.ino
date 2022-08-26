@@ -29,18 +29,19 @@ void loadInterface(){
             }
 
             case plug_inter:{
+                pointerPlug(temp_num_plug);
                 title_list = 1;
-                defElement(0, F("Plug"), settings_inter);
-                /*defElement(1, F("Num"), );
-                defElement(2, F("Limit"));
-                defElement(3, F("Trigg"));*/
+                defElement(0, F("Plugs"), home_inter);
+                defElement(1, F("Num"), &temp_num_plug, 0, 3);
+                defElement(2, F("Limit"), plug_limit, 0, 255);
+                defElement(3, F("Trigg"), plug_trigg, 0, 1);
                 break;
             }
             
             case clock_inter:{
                 saveTempData();
                 title_list = 1;
-                defElement(0, F("Clock"), settings_inter);
+                defElement(0, F("Clock"), home_inter);
                 defElement(1, F("Min"), &temp_minute, 0, 59);
                 defElement(2, F("Hour"), &temp_hour, 0, 23);
                 defElement(3, F("Day"), &temp_day, 1, 31);
@@ -279,5 +280,4 @@ void printPlugBalls(byte x, byte y, byte alarm){
             display.drawCircle(x + 6 * i, y, 2, SSD1306_WHITE);
         }
     }
-    
 }

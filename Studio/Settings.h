@@ -40,7 +40,7 @@ struct {
     byte interface;
     byte min;
     byte max;
-}element_list[10];
+}element_list[9];
 byte element_total;
 byte element_selected;
 bool selector = 1;
@@ -101,3 +101,25 @@ unsigned long int blink_reg_millis;
 
 // EEPROM
 #include <EEPROM.h>
+
+// Power plugs
+byte temp_num_plug;
+
+byte* plug_limit;
+byte* plug_trigg;
+byte* plug_reference;
+
+byte plug_limit_0;
+byte plug_limit_1;
+byte plug_limit_2;
+byte plug_limit_3;
+
+byte plug_trigg_0;
+byte plug_trigg_1;
+byte plug_trigg_2;
+byte plug_trigg_3;
+
+byte plug_reference_0;
+byte plug_reference_1;
+byte plug_reference_2;
+byte plug_reference_3;

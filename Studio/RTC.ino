@@ -3,11 +3,11 @@ void getTime(){
 }
 
 
-void addTimer(byte time_span, byte plugs){
+byte addTimer(byte time_span, byte plugs){
     byte i, c;
     if (num_timer >= 10){
         num_timer = 10; // Just to be safe
-        return;
+        return 255;
     }
     for (c = 0; c < num_timer && time_span > alarm_timer[c].time_span; c++){}
     //c++;
@@ -31,7 +31,7 @@ void addTimer(byte time_span, byte plugs){
         }
         num_timer++;
     }
-    
+    return c;
 }
 
 void adjustTimer(){
@@ -48,13 +48,13 @@ void setTimer(){
     rtc.setAlarm1(rtc.now() + TimeSpan(alarm_timer[0].time_span * 60), DS3231_A1_Date);
 }
 
-void deleteTimer(){
+void deleteTimer(byte alarm){
     byte i;
     if (num_timer <= 0){
         num_timer = 0; // Just to be safe
         return;
     }
-    for (i = 0; i < num_timer; i++){
+    for (i = alarm; i < num_timer; i++){
         alarm_timer[i] = alarm_timer[i + 1];
     }
     num_timer--;
@@ -71,7 +71,7 @@ void checkTimer(){
                 pushPlugState(i, 2);
             }
         }
-        deleteTimer();
+        deleteTimer(0);
         if (num_timer > 0){
             setTimer();
         }
@@ -82,7 +82,7 @@ void checkTimer(){
         prev_minute = now.minute();
         adjustTimer();
 
-        if (interface == clock_inter){ // Just for design purposes
+        if (interface == clock_inter && selector){ // Just for design purposes
             saveTempData();
             oled_update = 1;
         }

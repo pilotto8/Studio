@@ -42,7 +42,6 @@ void buttonsHandle(){
                             setBits(&temp_plugs, button - 4, 2);
                             setBits(button + 1, 2);
                         }
-                        //pushPlugState(button - 4, 2);
                         break;
                     }
                 }
@@ -79,25 +78,10 @@ void buttonsHandle(){
                         savePlugState();
                     }
                 }
-                else {
-                    //setBits(&temp_plugs, button - 4, 2);
-                }
             }
-
             button = 0;
             button_pulse = 0;
         }
-
-
-        /*if (interface == alarm_inter){ // To make selected plugs blink
-            if (millis() - blink_reg_millis >= 500){
-                blink_reg_millis = millis();
-                regState[0] ^= temp_plugs >> 5;
-                regState[1] ^= temp_plugs << 3;
-                reg_update = 1;
-            }
-        }*/
-
 
         if (reg_update){
             pushBits();

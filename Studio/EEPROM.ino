@@ -1,5 +1,7 @@
 byte* address[]{
-    &temp_minute, &temp_hour, &temp_day, &temp_month, &temp_year
+    &temp_minute, &temp_hour, &temp_day, &temp_month, &temp_year,
+    &temp_num_plug, &plug_trigg_0, &plug_trigg_1, &plug_trigg_2, &plug_trigg_3,
+    &plug_limit_0, &plug_limit_1, &plug_limit_2, &plug_limit_3
     ,0};
 
 void eepromUpdate(byte* pointer){
@@ -39,6 +41,14 @@ void parExecutor(byte i){
                     }
                 }
                 saveTempData();
+            }
+            break;
+        }
+        case 5:{
+            if (interface == plug_inter){
+                pointerPlug(temp_num_plug);
+                element_list[2].pointer = plug_limit;
+                element_list[3].pointer = plug_trigg;
             }
             break;
         }
