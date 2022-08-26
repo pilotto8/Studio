@@ -56,6 +56,11 @@ void setup() {
     }
 
     update_clock = millis() + 200;
+    //delay(1000);
+    Serial.print((char)28);
+    Serial.print((char)170);
+    Serial.print((char)255);
+    Serial.print((char)1);
 
     #if clear_registers
     regState[0] = 0;

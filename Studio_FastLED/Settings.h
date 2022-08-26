@@ -1,9 +1,3 @@
-// Software serial
-/*#include <SoftwareSerial.h>
-SoftwareSerial bus(3, 4); // RX, TX*/
-
-// LEDs
-#define NO_CLOCK_CORRECTION 1
 #include <FastLED.h>
 
 #define NUM_LEDS    100
@@ -15,4 +9,15 @@ CRGB leds[NUM_LEDS];
 //TBlendType    currentBlending;
 
 // PIN
-#define LED_PIN 2
+#define LED_PIN 9
+
+// FastLED
+byte led_config[4];
+bool new_config;
+
+enum parameters{
+    hue,
+    saturation,
+    brightness,
+    animation
+};
