@@ -90,6 +90,9 @@ void loop() {
 
     if (interface != home_inter && millis() - no_interaction >= 30000){
         selector = 1;
+        if (interface == alarm_inter){
+            resume_registers();
+        }
         interface = home_inter;
     }
 }
