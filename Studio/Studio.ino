@@ -57,7 +57,7 @@ void setup() {
     }
 
     update_clock = millis() + 200;
-    //delay(1000);
+    no_interaction = millis();
 
     #if clear_registers
     regState[0] = 0;
@@ -88,4 +88,8 @@ void loop() {
         }
     #endif
 
+    if (interface != home_inter && millis() - no_interaction >= 30000){
+        selector = 1;
+        interface = home_inter;
+    }
 }

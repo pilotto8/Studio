@@ -132,3 +132,6 @@ byte light_value = 255;
 byte light_animation = 1;
 
 bool update_leds;
+
+// Timers
+unsigned long int no_interaction;
