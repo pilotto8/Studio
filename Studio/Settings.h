@@ -40,7 +40,7 @@ struct {
     byte interface;
     byte min;
     byte max;
-}element_list[9];
+}element_list[8];
 byte element_total;
 byte element_selected;
 bool selector = 1;
@@ -123,3 +123,12 @@ byte plug_reference_0;
 byte plug_reference_1;
 byte plug_reference_2;
 byte plug_reference_3;
+
+
+// Leds
+byte light_hue = 28;
+byte light_saturation = 170;
+byte light_value = 255;
+byte light_animation = 1;
+
+bool update_leds;

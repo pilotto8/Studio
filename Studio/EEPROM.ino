@@ -1,7 +1,8 @@
 byte* address[]{
     &temp_minute, &temp_hour, &temp_day, &temp_month, &temp_year,
     &temp_num_plug, &plug_trigg_0, &plug_trigg_1, &plug_trigg_2, &plug_trigg_3,
-    &plug_limit_0, &plug_limit_1, &plug_limit_2, &plug_limit_3
+    &plug_limit_0, &plug_limit_1, &plug_limit_2, &plug_limit_3,
+    &light_hue, &light_saturation, &light_value, &light_animation
     ,0};
 
 void eepromUpdate(byte* pointer){
@@ -51,6 +52,12 @@ void parExecutor(byte i){
                 element_list[3].pointer = plug_trigg;
             }
             break;
+        }
+        case  14 ... 17:{
+            if (interface == light_inter || i == 17){
+                sendLightData();
+                break;
+            }
         }
     }
 }

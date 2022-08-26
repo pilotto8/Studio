@@ -28,6 +28,16 @@ void loadInterface(){
                 break;
             }
 
+            case light_inter:{
+                title_list = 1;
+                defElement(0, F("Light"), home_inter);
+                defElement(1, F("Hue"), &light_hue, 0, 255);
+                defElement(2, F("Sat."), &light_saturation, 0, 255);
+                defElement(3, F("Value"), &light_value, 0, 255);
+                defElement(4, F("Anim."), &light_animation, 0, 2);
+                break;
+            }
+
             case plug_inter:{
                 pointerPlug(temp_num_plug);
                 title_list = 1;

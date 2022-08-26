@@ -27,11 +27,6 @@ void buttonsHandle(){
                 button = findButton();
                 switch (button){
                     case 1 ... 3:{
-                        #if LUCE
-                        if (button == center){
-                            animation = !animation;
-                        }
-                        #endif
                         if (button == center){
                             button_pulse = center;
                         }

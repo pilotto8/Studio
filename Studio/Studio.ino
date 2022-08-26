@@ -1,6 +1,7 @@
 #include "Settings.h"
 #define OLED 1
 #define RTC 1
+#define LEDS 1
 byte* NEW_PARAMETER[] = {
     
 0}; // Just for developing purposes. If there are new parameters just put them here one time
@@ -57,10 +58,6 @@ void setup() {
 
     update_clock = millis() + 200;
     //delay(1000);
-    Serial.print((char)28);
-    Serial.print((char)170);
-    Serial.print((char)255);
-    Serial.print((char)1);
 
     #if clear_registers
     regState[0] = 0;
@@ -87,6 +84,8 @@ void loop() {
             update_clock = millis();
             checkTimer();
             update_clock_data = 1;
+            //sendLightData();
         }
     #endif
+
 }

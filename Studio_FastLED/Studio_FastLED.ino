@@ -8,17 +8,14 @@ void setup(){
 }
 
 void loop(){
-    if (Serial.available() > 0){
-        Serial.readBytes(led_config, 4);
-        new_config = 1;
-        //Serial.println((char)led_config[hue] + (char)led_config[saturation] + (char)led_config[brightness]);
-    }
     if (new_config){
         animationHandle();
     }
-    
 }
 
-/*void serialEvent(){
-    
-}*/
+void serialEvent(){
+    if (Serial.available() > 0){
+        Serial.readBytes(led_config, 4);
+        new_config = 1;
+    }
+}

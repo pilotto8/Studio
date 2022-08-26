@@ -18,6 +18,6 @@ bool new_config;
 enum parameters{
     hue,
     saturation,
-    brightness,
+    value,
     animation
 };
