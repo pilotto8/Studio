@@ -25,6 +25,7 @@ void loadInterface(){
                 defElement(1, F("Light"), light_inter);
                 defElement(2, F("Plugs"), plug_inter);
                 defElement(3, F("Clock"), clock_inter);
+                defElement(4, F("Wake"), &moove_timer, 0, 10);
                 break;
             }
 

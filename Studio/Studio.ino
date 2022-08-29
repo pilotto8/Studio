@@ -25,6 +25,8 @@ void setup() {
     pinMode(6, OUTPUT);
 
     pinMode(2, INPUT_PULLUP);
+    pinMode(MW_DATA, INPUT);
+    pinMode(LED_BUILTIN, OUTPUT);
     
     #if OLED
     oledInit();
@@ -58,6 +60,7 @@ void setup() {
 
     update_clock = millis() + 200;
     no_interaction = millis();
+    no_moovement = millis();
 
     #if clear_registers
     regState[0] = 0;
@@ -73,6 +76,7 @@ void setup() {
 
 
 void loop() {
+
     buttonsHandle();
 
     #if OLED
@@ -84,7 +88,6 @@ void loop() {
             update_clock = millis();
             checkTimer();
             update_clock_data = 1;
-            //sendLightData();
         }
     #endif
 
@@ -95,4 +98,6 @@ void loop() {
         }
         interface = home_inter;
     }
+
+    checkMoovement();
 }

@@ -3,11 +3,12 @@
 //SoftwareSerial bus(9, 12);
 
 // PIN
-// Taken: 3,4,5,6,7,8,9,10,11,12   A4,A5
+// Taken: 3,4,5,6,7,8,10,11,12   A4,A5
 #define RCLK 10
 #define SRCLK 7
 #define DATA_OUT 11
 #define DATA_IN 8
+#define MW_DATA 12
 
 // Oled
 #include <Adafruit_GFX.h>
@@ -135,3 +136,9 @@ bool update_leds;
 
 // Timers
 unsigned long int no_interaction;
+
+// Microwave sensor
+bool moovement_state = 1;
+unsigned long int no_moovement;
+
+byte moove_timer = 1;
