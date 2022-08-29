@@ -53,6 +53,10 @@ void setup() {
     eepromDownload();
     regState[0] = EEPROM.read(0);
     regState[1] = EEPROM.read(1);
+    if (regState[1] << 1 != 0){ //Recovery from register corruption (buttons wuldn't works)
+        regState[1] >>= 7;
+        regState[1] <<= 7;
+    }
     pushBits();
     for (byte i = 4; i < 9; i++){
         digitalWrite(i - 2, readBits(i));
