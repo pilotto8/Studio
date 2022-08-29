@@ -57,7 +57,7 @@ void parExecutor(byte i){
         }
         case  14 ... 17:{
             if (interface == light_inter || i == 17){
-                sendLightData();
+                sendLightData(1);
                 break;
             }
         }

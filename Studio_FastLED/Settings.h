@@ -5,6 +5,7 @@
 #define LED_TYPE    WS2811
 #define COLOR_ORDER BRG
 CRGB leds[NUM_LEDS];
+#define UPDATES_PER_SECOND 120
 //CRGBPalette16 currentPalette;
 //TBlendType    currentBlending;
 
@@ -13,7 +14,7 @@ CRGB leds[NUM_LEDS];
 
 // FastLED
 byte led_config[4];
-bool new_config;
+byte new_config;
 
 enum parameters{
     hue,
@@ -21,3 +22,6 @@ enum parameters{
     value,
     animation
 };
+
+float offset;
+//float degree;

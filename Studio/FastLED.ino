@@ -8,8 +8,8 @@ void sendLightData(byte hue, byte saturation, byte value, byte animation){
     
 }
 
-void sendLightData(){
-    sendLightData(light_hue, light_saturation, light_value, light_animation);
+void sendLightData(byte state){
+    sendLightData(light_hue, light_saturation, light_value, light_animation * 2 + !state);
 }
 
 
