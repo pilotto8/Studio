@@ -1,4 +1,4 @@
-volatile byte* address[]{
+const byte* address[] {
     &temp_minute, &temp_hour, &temp_day, &temp_month, &temp_year,
     &temp_num_plug, 
     &plug_trigg_0, &plug_trigg_1, &plug_trigg_2, &plug_trigg_3,
@@ -10,6 +10,10 @@ volatile byte* address[]{
     &light_animation_0, &light_animation_1, &light_animation_2,
     &moove_timer
     ,0};
+
+void writeParam(byte* pointer, byte value){
+    *pointer = value;
+}
 
 void eepromUpdate(byte* pointer){
     byte i;
@@ -25,7 +29,7 @@ void eepromUpdate(byte* pointer){
 void eepromDownload(){
     byte i;
     for (i = 0; address[i] != 0; i++){
-        *address[i] = EEPROM.read(i + eeprom_offset);
+        writeParam (address[i], EEPROM.read(i + eeprom_offset));
         parExecutor(i);
     }
 }

@@ -5,12 +5,11 @@ void getTime(){
 
 byte addTimer(byte time_span, byte plugs){
     byte i, c;
-    if (num_timer >= 10){
-        num_timer = 10; // Just to be safe
+    if (num_timer >= max_timer){
+        num_timer = max_timer; // Just to be safe
         return 255;
     }
     for (c = 0; c < num_timer && time_span > alarm_timer[c].time_span; c++){}
-    //c++;
     if (time_span == alarm_timer[c].time_span){
         alarm_timer[c].plugs |= plugs;
     }
@@ -36,7 +35,7 @@ byte addTimer(byte time_span, byte plugs){
 
 void adjustTimer(){
     byte i;
-    for (i = 0; i < 10 && i < num_timer; i++){
+    for (i = 0; i < max_timer && i < num_timer; i++){
         if (alarm_timer[i].time_span > 0){
             alarm_timer[i].time_span--;
         }

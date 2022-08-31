@@ -63,6 +63,7 @@ void buttonsHandle(){
 
         }
         no_interaction = millis();
+        no_moovement = millis();
     }
     else {
         if (button){

@@ -8,7 +8,7 @@ volatile byte* NEW_PARAMETER[] = {
 
 
 // Debug flags
-#define shift_setup 1
+#define shift_setup 0
 
 void setup() {
     Serial.begin(115200);

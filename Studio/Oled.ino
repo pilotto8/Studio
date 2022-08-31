@@ -31,7 +31,7 @@ void loadInterface(){
                 pointerProfile(light_profile);
                 title_list = 1;
                 defElement(0, F("Light"), home_inter);
-                defElement(1, F("Pro."), &light_profile, 0, 2);
+                defElement(1, F("Prof."), &light_profile, 0, 2);
                 defElement(2, F("Hue"), light_hue, 0, 255);
                 defElement(3, F("Sat."), light_saturation, 0, 255);
                 defElement(4, F("Value"), light_value, 0, 255);
@@ -178,11 +178,17 @@ void loadInterface(){
 }
 
 void defElement(byte number, String name, byte interface){
+    if (number > max_element_list){
+        return;
+    }
     element_list[number].name = name;
     element_list[number].interface = interface;
     element_total++;
 }
 void defElement(byte number, String name, byte* pointer, byte min, byte max){
+    if (number > max_element_list){
+        return;
+    }
     element_list[number].name = name;
     element_list[number].pointer = pointer;
     element_list[number].min = min;

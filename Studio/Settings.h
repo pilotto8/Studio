@@ -18,6 +18,7 @@ Adafruit_SSD1306 display(SCREEN_WIDTH, SCREEN_HEIGHT, &Wire, OLED_RESET);
 
 #define rows 5
 #define scrolling_time 10 // *10 [ms]
+#define max_element_list 6
 
 enum interfaces{
     home_inter = 1,
@@ -37,7 +38,7 @@ struct {
     byte interface;
     byte min;
     byte max;
-}element_list[6];
+}element_list[max_element_list];
 byte element_total;
 byte element_selected;
 bool selector = 1;
@@ -47,6 +48,7 @@ bool title_list;
 
 // RTC
 #include <RTClib.h>
+#define max_timer 8
 RTC_DS3231 rtc;
 DateTime now;
 byte hour;
@@ -57,7 +59,7 @@ bool update_clock_data;
 struct {
     byte time_span;
     byte plugs;
-} alarm_timer[10];
+} alarm_timer[max_timer];
 
 byte num_timer;
 byte temp_time_span;
@@ -85,12 +87,14 @@ enum buttons{
     null,
     up,
     center,
-    down,
+    down
+};
+/*
     bD,
     bC,
     bB,
     bA
-};
+*/
 unsigned long int last_millis;
 #define debounce 50
 #define long_press 500
