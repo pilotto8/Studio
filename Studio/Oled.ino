@@ -1,7 +1,5 @@
 void oledInit(){
-    if(!display.begin(SSD1306_SWITCHCAPVCC, SCREEN_ADDRESS)) {
-        Serial.println("failed");
-    }
+    display.begin(SSD1306_SWITCHCAPVCC, SCREEN_ADDRESS);
     display.clearDisplay();
     display.setRotation(2);
     display.setTextSize(1);      // Normal 1:1 pixel scale
@@ -30,12 +28,14 @@ void loadInterface(){
             }
 
             case light_inter:{
+                pointerProfile(light_profile);
                 title_list = 1;
                 defElement(0, F("Light"), home_inter);
-                defElement(1, F("Hue"), &light_hue, 0, 255);
-                defElement(2, F("Sat."), &light_saturation, 0, 255);
-                defElement(3, F("Value"), &light_value, 0, 255);
-                defElement(4, F("Anim."), &light_animation, 0, 2);
+                defElement(1, F("Pro."), &light_profile, 0, 2);
+                defElement(2, F("Hue"), light_hue, 0, 255);
+                defElement(3, F("Sat."), light_saturation, 0, 255);
+                defElement(4, F("Value"), light_value, 0, 255);
+                defElement(5, F("Anim."), light_animation, 0, 2);
                 break;
             }
 

@@ -2,6 +2,7 @@
 
 void setup(){
     Serial.begin(115200);
+    randomSeed(analogRead(A0));
 
     FastLED.addLeds<LED_TYPE, LED_PIN, COLOR_ORDER>(leds, NUM_LEDS).setCorrection( TypicalLEDStrip );
     FastLED.setBrightness(BRIGHTNESS);

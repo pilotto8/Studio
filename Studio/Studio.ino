@@ -1,19 +1,17 @@
 #include "Settings.h"
 #define OLED 1
 #define RTC 1
-#define LEDS 1
-byte* NEW_PARAMETER[] = {
-    
+#define MOOVEMENT 1
+volatile byte* NEW_PARAMETER[] = {
+
 0}; // Just for developing purposes. If there are new parameters just put them here one time
 
+
 // Debug flags
-#define clear_registers 0
+#define shift_setup 1
 
 void setup() {
     Serial.begin(115200);
-    /*bus.begin(4800);
-    sendPreset(100, 100);
-    sendBrightness(20, 255);*/
     pinMode(SRCLK, OUTPUT);
     pinMode(RCLK, OUTPUT);
     pinMode(DATA_OUT, OUTPUT);
@@ -45,12 +43,15 @@ void setup() {
     #endif
 
     
+    #if !shift_setup
     if (NEW_PARAMETER[0] != 0){
         for(byte i = 0; NEW_PARAMETER[i]; i++){ 
             eepromUpdate(NEW_PARAMETER[i]);
         }
     }
+    
     eepromDownload();
+    
     regState[0] = EEPROM.read(0);
     regState[1] = EEPROM.read(1);
     if (regState[1] << 1 != 0){ //Recovery from register corruption (buttons wuldn't works)
@@ -65,22 +66,11 @@ void setup() {
     update_clock = millis() + 200;
     no_interaction = millis();
     no_moovement = millis();
-
-    #if clear_registers
-    regState[0] = 0;
-    regState[1] = 0;
-    EEPROM.update(0, regState[0]);
-    EEPROM.update(1, regState[1]);
-    pushBits();
-    for (byte i = 0; i < 4; i++){
-        digitalWrite(i + 3, 0);
-    }
     #endif
 }
 
 
 void loop() {
-
     buttonsHandle();
 
     #if OLED
@@ -103,5 +93,7 @@ void loop() {
         interface = home_inter;
     }
 
-    checkMoovement();
+    #if MOOVEMENT
+        checkMoovement();
+    #endif
 }

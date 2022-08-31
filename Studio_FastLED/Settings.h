@@ -5,7 +5,7 @@
 #define LED_TYPE    WS2811
 #define COLOR_ORDER BRG
 CRGB leds[NUM_LEDS];
-#define UPDATES_PER_SECOND 120
+#define UPDATES_PER_SECOND 80
 //CRGBPalette16 currentPalette;
 //TBlendType    currentBlending;
 
@@ -23,5 +23,11 @@ enum parameters{
     animation
 };
 
+// Animatinos
 float offset;
+struct{
+    byte speed;
+    byte value;
+    byte sign;
+}led_star[100];
 //float degree;

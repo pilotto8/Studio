@@ -1,8 +1,13 @@
-byte* address[]{
+volatile byte* address[]{
     &temp_minute, &temp_hour, &temp_day, &temp_month, &temp_year,
-    &temp_num_plug, &plug_trigg_0, &plug_trigg_1, &plug_trigg_2, &plug_trigg_3,
+    &temp_num_plug, 
+    &plug_trigg_0, &plug_trigg_1, &plug_trigg_2, &plug_trigg_3,
     &plug_limit_0, &plug_limit_1, &plug_limit_2, &plug_limit_3,
-    &light_hue, &light_saturation, &light_value, &light_animation,
+    &light_profile,
+    &light_hue_0, &light_hue_1, &light_hue_2,
+    &light_saturation_0, &light_saturation_1, &light_saturation_2,
+    &light_value_0, &light_value_1, &light_value_2,
+    &light_animation_0, &light_animation_1, &light_animation_2,
     &moove_timer
     ,0};
 
@@ -55,11 +60,17 @@ void parExecutor(byte i){
             }
             break;
         }
-        case  14 ... 17:{
-            if (interface == light_inter || i == 17){
-                sendLightData(1);
-                break;
+        case  14 ... 26:{
+            if (interface == light_inter || i == 26){
+                sendLightData(1); // profilePointer() already included
+                if (interface == light_inter){
+                    element_list[2].pointer = light_hue;
+                    element_list[3].pointer = light_saturation;
+                    element_list[4].pointer = light_value;
+                    element_list[5].pointer = light_animation;
+                }
             }
+            break;
         }
     }
 }

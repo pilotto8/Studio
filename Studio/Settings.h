@@ -1,7 +1,3 @@
-// Software serial
-#include <SoftwareSerial.h>
-//SoftwareSerial bus(9, 12);
-
 // PIN
 // Taken: 3,4,5,6,7,8,10,11,12   A4,A5
 #define RCLK 10
@@ -41,11 +37,11 @@ struct {
     byte interface;
     byte min;
     byte max;
-}element_list[8];
+}element_list[6];
 byte element_total;
 byte element_selected;
 bool selector = 1;
-int temp;
+byte temp;
 bool title_list;
 
 
@@ -56,7 +52,7 @@ DateTime now;
 byte hour;
 byte minute;
 unsigned long int update_clock;
-bool update_clock_data = 0;
+bool update_clock_data;
 
 struct {
     byte time_span;
@@ -96,7 +92,6 @@ enum buttons{
     bA
 };
 unsigned long int last_millis;
-unsigned long int blink_reg_millis;
 #define debounce 50
 #define long_press 500
 
@@ -127,12 +122,28 @@ byte plug_reference_3;
 
 
 // Leds
-byte light_hue = 28;
-byte light_saturation = 170;
-byte light_value = 255;
-byte light_animation = 1;
+byte light_profile = 0;
 
-bool update_leds;
+byte* light_hue;
+byte* light_saturation;
+byte* light_value;
+byte* light_animation;
+
+byte light_hue_0;
+byte light_hue_1;
+byte light_hue_2;
+
+byte light_saturation_0;
+byte light_saturation_1;
+byte light_saturation_2;
+
+byte light_value_0;
+byte light_value_1;
+byte light_value_2;
+
+byte light_animation_0;
+byte light_animation_1;
+byte light_animation_2;
 
 // Timers
 unsigned long int no_interaction;
