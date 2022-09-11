@@ -11,7 +11,7 @@ volatile byte* NEW_PARAMETER[] = {
 #define shift_setup 0
 
 void setup() {
-    Serial.begin(115200);
+    Serial.begin(57600);
     pinMode(SRCLK, OUTPUT);
     pinMode(RCLK, OUTPUT);
     pinMode(DATA_OUT, OUTPUT);
@@ -22,9 +22,13 @@ void setup() {
     pinMode(5, OUTPUT);
     pinMode(6, OUTPUT);
 
-    pinMode(2, INPUT_PULLUP);
     pinMode(MW_DATA, INPUT);
-    pinMode(LED_BUILTIN, OUTPUT);
+    pinMode(MICROPHONE, INPUT);
+    //pinMode(LED_BUILTIN, OUTPUT);
+
+    pinMode(WAKE_SERIAL, OUTPUT);
+    pinMode(INTERRUPT, INPUT);
+    attachInterrupt(digitalPinToInterrupt(INTERRUPT), serialInterrupt, RISING);
     
     #if OLED
     oledInit();
@@ -96,4 +100,8 @@ void loop() {
     #if MOOVEMENT
         checkMoovement();
     #endif
+}
+
+void serialInterrupt(){
+
 }

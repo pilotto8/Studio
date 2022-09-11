@@ -11,6 +11,9 @@ CRGB leds[NUM_LEDS];
 
 // PIN
 #define LED_PIN 9
+#define INTERRUPT 2
+#define WAKE_SERIAL 3
+#define MICROPHONE A0
 
 // FastLED
 byte led_config[4];
@@ -30,4 +33,6 @@ struct{
     byte value;
     byte sign;
 }led_star[100];
-//float degree;
+
+// Serial
+bool serial_call;

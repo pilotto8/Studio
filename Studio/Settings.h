@@ -1,10 +1,14 @@
 // PIN
-// Taken: 3,4,5,6,7,8,10,11,12   A4,A5
+// Taken: 0,1,2,3,4,5,6,7,8,9,10,11,12,13   A4,A5
 #define RCLK 10
 #define SRCLK 7
 #define DATA_OUT 11
 #define DATA_IN 8
 #define MW_DATA 12
+#define INTERRUPT 2
+#define MICROPHONE 9
+#define WAKE_SERIAL 13
+
 
 // Oled
 #include <Adafruit_GFX.h>
@@ -157,3 +161,7 @@ bool moovement_state = 1;
 unsigned long int no_moovement;
 
 byte moove_timer = 1;
+
+// Microphone
+unsigned long int no_microphone;
+byte prev_tap;

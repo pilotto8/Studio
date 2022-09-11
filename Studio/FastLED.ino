@@ -1,11 +1,12 @@
 void sendLightData(byte hue, byte saturation, byte value, byte animation){
+    SET(PORTB, 5);
     if (Serial){
         Serial.write(hue);
         Serial.write(saturation);
         Serial.write(value);
         Serial.write(animation);
     }
-    
+    CLR(PORTB, 5);
 }
 
 void sendLightData(byte state){
