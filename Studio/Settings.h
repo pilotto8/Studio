@@ -6,7 +6,7 @@
 #define DATA_IN 8
 #define MW_DATA 12
 #define INTERRUPT 2
-#define MICROPHONE 9
+#define LED_BUTTON 9
 #define WAKE_SERIAL 13
 
 
@@ -85,6 +85,7 @@ byte regState[2];
 byte temp_regState[2];
 byte button;
 byte button_pulse;
+bool led_button;
 
 bool reg_update;
 enum buttons{
@@ -100,6 +101,7 @@ enum buttons{
     bA
 */
 unsigned long int last_millis;
+unsigned long int last_millis_1;
 #define debounce 50
 #define long_press 500
 
@@ -164,4 +166,5 @@ byte moove_timer = 1;
 
 // Microphone
 unsigned long int no_microphone;
-byte prev_tap;
+byte tap_map[5];
+byte tap_index;

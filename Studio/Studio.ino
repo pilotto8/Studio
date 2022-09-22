@@ -23,7 +23,7 @@ void setup() {
     pinMode(6, OUTPUT);
 
     pinMode(MW_DATA, INPUT);
-    pinMode(MICROPHONE, INPUT);
+    pinMode(LED_BUTTON, INPUT_PULLUP);
     //pinMode(LED_BUILTIN, OUTPUT);
 
     pinMode(WAKE_SERIAL, OUTPUT);

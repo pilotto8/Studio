@@ -2,8 +2,8 @@ void oledInit(){
     display.begin(SSD1306_SWITCHCAPVCC, SCREEN_ADDRESS);
     display.clearDisplay();
     display.setRotation(2);
-    display.setTextSize(1);      // Normal 1:1 pixel scale
-    display.setTextColor(SSD1306_WHITE); // Draw white text
+    display.setTextSize(1);
+    display.setTextColor(SSD1306_WHITE);
     display.display();
 }
 
@@ -118,8 +118,11 @@ void loadInterface(){
                         display.print(alarm_timer[i].time_span % 60);
                         display.print(F("min"));
                         printPlugBalls(90, 42 + 8 * i, i);
-                    }   
+                    }
                 }
+
+                display.drawFastHLine(0, 63, 128 - ((millis() - no_moovement) * 128 / (moove_timer * 60000)), SSD1306_WHITE);
+
                 display.display();
             }
             break;
