@@ -57,6 +57,13 @@ void buttonsHandle(){
                     temp_plugs = 0;
                     setBits(&temp_plugs, button - 4, 1);
                     setBits(button + 1, 1);
+                    byte timerFound = findTimerPlug(button - 4);
+                    if (timerFound){
+                        temp_time_span = alarm_timer[timerFound - 1].time_span;
+                    }
+                    else {
+                        temp_time_span = 1;
+                    }
                     interface = alarm_inter;
                 }
             }
@@ -64,6 +71,12 @@ void buttonsHandle(){
         }
         no_interaction = millis();
         no_moovement = millis();
+
+        if (interface == sleep_inter){ // To turn on the lights on interactions
+            moovement_state = 1;
+            sendLightData(1);
+        }
+
     }
     else {
         if (reg_update){ // Update shift registers (it is here to prevent data corruption from electric arcs)
@@ -88,4 +101,25 @@ void buttonsHandle(){
 
         last_millis = millis();
     }
+}
+
+bool LEDbuttonTrigg(){
+    if (!digitalRead(LED_BUTTON)){
+        if (!led_button){
+            if (millis() - last_millis_1 > debounce){
+                if (moovement_state == 1){
+                    no_moovement = millis() - 720000;
+                }
+                led_button = 1;
+                return 1;
+            }
+        }
+    }
+    else {
+        if (led_button){
+            led_button = 0;
+        }
+        last_millis_1 = millis();
+    }
+    return 0;
 }

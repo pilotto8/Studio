@@ -89,7 +89,7 @@ void loop() {
         }
     #endif
 
-    if (interface != home_inter && millis() - no_interaction >= 30000){
+    if (interface != home_inter && interface != sleep_inter && millis() - no_interaction >= 30000){
         selector = 1;
         if (interface == alarm_inter){
             resume_registers();

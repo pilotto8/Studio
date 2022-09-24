@@ -3,7 +3,7 @@ void getTime(){
 }
 
 
-byte addTimer(byte time_span, byte plugs){
+byte addTimer(byte time_span, byte plugs, bool invert){
     byte i, c;
     if (num_timer >= max_timer){
         num_timer = max_timer; // Just to be safe
@@ -11,7 +11,15 @@ byte addTimer(byte time_span, byte plugs){
     }
     for (c = 0; c < num_timer && time_span > alarm_timer[c].time_span; c++){}
     if (time_span == alarm_timer[c].time_span){
-        alarm_timer[c].plugs |= plugs;
+        if (invert){
+            alarm_timer[c].plugs ^= plugs;
+            if (!alarm_timer[c].plugs){
+                deleteTimer(c);
+            }
+        }
+        else {
+            alarm_timer[c].plugs |= plugs;
+        }
     }
     else {
         
@@ -86,6 +94,26 @@ void checkTimer(){
             oled_update = 1;
         }
     }
+}
+
+byte findTimerPlug(byte plug){
+    byte i;
+    for (i = 0; i < num_timer; i++){
+        if (readBits(&alarm_timer[i].plugs, plug)){
+            return i + 1;
+        }
+    }
+    return 0;
+}
+
+byte findTimerTime(byte time){
+    byte i;
+    for (i = 0; i < num_timer; i++){
+        if (alarm_timer[i].time_span == time){
+            return i + 1;
+        }
+    }
+    return 0;
 }
 
 void saveTempData(){

@@ -13,6 +13,12 @@ void loadInterface(){
         //Setup interface
         element_total = 0;
         switch (interface){
+            case sleep_inter:{
+                display.clearDisplay();
+                display.display();
+                freeze_registers();
+                break;
+            }
             case home_inter:{
                 
                 break;
@@ -62,7 +68,7 @@ void loadInterface(){
             }
 
             case alarm_inter:{
-                temp_time_span = 1;
+                //temp_time_span = 1;
                 break;
             }
         }
@@ -76,6 +82,20 @@ void loadInterface(){
     }
     //Running interface
     switch (interface){
+        case sleep_inter:{
+            if (button_pulse != 0 && button_pulse != -1){
+                if (button_pulse == center){
+                    button_pulse = 0;
+                }
+            }
+            if (millis() - no_moovement < 720000){
+                resume_registers();
+                interface = home_inter;
+            }
+            break;
+        }
+
+
         case home_inter:{
             if (button_pulse != 0 && button_pulse != -1){
                 if (button_pulse == center){
@@ -120,13 +140,18 @@ void loadInterface(){
                         printPlugBalls(90, 42 + 8 * i, i);
                     }
                 }
+
+                if (digitalRead(MW_DATA)){
+                    display.setCursor(120, 0);
+                    display.print('*');
+                }
                 
                 // Just for testing purposes
-                display.setCursor(0,55);
+                /*display.setCursor(0,55);
                 display.print(moovement_state);
                 display.print(digitalRead(LED_BUTTON));
                 display.print(digitalRead(MW_DATA));
-                display.drawFastHLine(0, 63, 128 - ((millis() - no_moovement) * 128 / (moove_timer * 60000)), SSD1306_WHITE);
+                display.drawFastHLine(0, 63, 128 - ((millis() - no_moovement) * 128 / (moove_timer * 60000)), SSD1306_WHITE);*/
                 //
 
                 display.display();
@@ -140,11 +165,11 @@ void loadInterface(){
                     interface = home_inter;
                     button_pulse = 0;
 
-                    addTimer(temp_time_span, temp_plugs);
+                    addTimer(temp_time_span, temp_plugs, 1);
                     resume_registers();
                 }
 
-                else if (button_pulse == up&& temp_time_span < 255){
+                else if (button_pulse == up && temp_time_span < 255){
                     temp_time_span++;
                 }
                 else if (button_pulse == down && temp_time_span > 1){
@@ -164,8 +189,8 @@ void loadInterface(){
                 display.setTextSize(2);
                 display.print(F("min"));
                 
-                display.setCursor(40, 0);
-                display.print(F("Timer"));
+                display.setCursor(40, 0); // x = 40
+                display.print(F("Timer "));
 
                 display.setTextSize(1);
 

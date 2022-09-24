@@ -1,9 +1,12 @@
 void checkMoovement(){
     if (!moovement_state){
-        if (LEDbuttonTrigg() || (digitalRead(MW_DATA) && (millis() - no_moovement <= 12 * 60000))){
+        if (LEDbuttonTrigg() || (digitalRead(MW_DATA) && (millis() - no_moovement < 720000))){ //720000ms = 12min
             moovement_state = 1;
-            no_moovement = millis();
             sendLightData(1);
+            no_moovement = millis();
+        }
+        if (interface != sleep_inter && millis() - no_moovement >= 720000){
+            interface = sleep_inter;
         }
     }
     else {
@@ -21,25 +24,4 @@ void checkMoovement(){
             }
         }
     }
-}
-
-bool LEDbuttonTrigg(){
-    if (!digitalRead(LED_BUTTON)){
-        if (!led_button){
-            if (millis() - last_millis_1 > debounce){
-                if (moovement_state == 1){
-                    no_moovement = millis() - (12 * 60000);
-                }
-                led_button = 1;
-                return 1;
-            }
-        }
-    }
-    else {
-        if (led_button){
-            led_button = 0;
-        }
-        last_millis_1 = millis();
-    }
-    return 0;
 }

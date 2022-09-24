@@ -25,7 +25,8 @@ Adafruit_SSD1306 display(SCREEN_WIDTH, SCREEN_HEIGHT, &Wire, OLED_RESET);
 #define max_element_list 6
 
 enum interfaces{
-    home_inter = 1,
+    sleep_inter,
+    home_inter,
     settings_inter,
     light_inter,
     plug_inter,
@@ -75,7 +76,7 @@ byte temp_day;
 byte temp_month;
 byte temp_year;
 
-//const char *days[] = {"Dom ", "Lun ", "Mar ", "Mer ", "Gio ", "Ven ", "Sab "};
+//const char days[][3] PROGMEM = {"Dom", "Lun", "Mar", "Mer", "Gio", "Ven", "Sab"};
 
 // Registers and buttons
 #define CLR(x,y) (x&=(~(1<<y)))
