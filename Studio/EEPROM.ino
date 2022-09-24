@@ -38,10 +38,12 @@ void parExecutor(byte i){
     switch (i){
         case 0 ... 4:{
             if (interface == clock_inter){
+                byte temp_second = 0;
                 if (i == 0){
                     rtc.clearAlarm(1);
+                    temp_second = now.second();
                 }
-                rtc.adjust(DateTime(temp_year + 2000, temp_month, temp_day, temp_hour, temp_minute, 0));
+                rtc.adjust(DateTime(temp_year + 2000, temp_month, temp_day, temp_hour, temp_minute, temp_second));
 
                 if (num_timer > 0){
                     setTimer();

@@ -66,10 +66,16 @@ void buttonsHandle(){
         no_moovement = millis();
     }
     else {
+        if (reg_update){ // Update shift registers (it is here to prevent data corruption from electric arcs)
+            pushBits();
+            reg_update = 0;
+        }
+
+
         if (button){
-            setBits(9, 15, 0);
+            setBits(9, 15, 0); // Clear button's bits
             if (button > 3){
-                if (interface != alarm_inter){
+                if (interface != alarm_inter){ // To be able to select the power plugs
                     if (millis() - last_millis < long_press){
                         pushPlugState(button - 4, 2); /// State 2 means to invert the current state
                         savePlugState();
@@ -80,10 +86,6 @@ void buttonsHandle(){
             button_pulse = 0;
         }
 
-        if (reg_update){
-            pushBits();
-            reg_update = 0;
-        }
         last_millis = millis();
     }
 }

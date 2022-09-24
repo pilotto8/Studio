@@ -98,6 +98,7 @@ void loadInterface(){
                 display.setCursor(5, 10);
                 printZero(now.hour());
                 display.print(':');
+                //display.print(((millis() / 1000) % 2) ? ':':' ');
                 printZero(now.minute());
 
                 display.setTextSize(1);
@@ -108,7 +109,6 @@ void loadInterface(){
                 printZero(now.month());
 
                 if (num_timer > 0){
-                    
                     for (byte i = 0; i < num_timer && i < 3; i++){
                         display.setCursor(5, 40 + 8 * i);
                         if (alarm_timer[i].time_span >= 60){
@@ -120,8 +120,14 @@ void loadInterface(){
                         printPlugBalls(90, 42 + 8 * i, i);
                     }
                 }
-
+                
+                // Just for testing purposes
+                display.setCursor(0,55);
+                display.print(moovement_state);
+                display.print(digitalRead(LED_BUTTON));
+                display.print(digitalRead(MW_DATA));
                 display.drawFastHLine(0, 63, 128 - ((millis() - no_moovement) * 128 / (moove_timer * 60000)), SSD1306_WHITE);
+                //
 
                 display.display();
             }
