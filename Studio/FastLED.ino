@@ -1,17 +1,26 @@
 void sendLightData(byte hue, byte saturation, byte value, byte animation){
     SET(PORTB, 5);
-    if (Serial){
-        Serial.write(hue);
-        Serial.write(saturation);
-        Serial.write(value);
-        Serial.write(animation);
-    }
+    data_light[0] = 1;
+    data_light[1] = hue;
+    data_light[2] = saturation;
+    data_light[3] = value;
+    data_light[4] = animation;
+    /*uint8_t crc = crc8_bit::crc_calculate(data_light, 4);
+    data_light[4] = crc;*/
+    pushSerial();
     CLR(PORTB, 5);
 }
 
 void sendLightData(byte state){
     pointerProfile(light_profile);
     sendLightData(*light_hue, *light_saturation, *light_value, *light_animation * 2 + !state);
+}
+
+void pushSerial(){
+    byte i;
+    for (i = 0; i < 5; i++){
+        Serial.write(data_light[i]);
+    }
 }
 
 void pointerProfile(byte profile){

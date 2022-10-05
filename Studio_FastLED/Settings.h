@@ -16,10 +16,11 @@ CRGB leds[NUM_LEDS];
 #define MICROPHONE A0
 
 // FastLED
-byte led_config[4];
+byte led_config[5];
 byte new_config;
 
 enum parameters{
+    empty,
     hue,
     saturation,
     value,

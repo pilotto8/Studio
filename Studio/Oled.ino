@@ -37,11 +37,11 @@ void loadInterface(){
                 pointerProfile(light_profile);
                 title_list = 1;
                 defElement(0, F("Light"), home_inter);
-                defElement(1, F("Prof."), &light_profile, 0, 2);
+                defElement(1, F("Prof"), &light_profile, 0, 2);
                 defElement(2, F("Hue"), light_hue, 0, 255);
-                defElement(3, F("Sat."), light_saturation, 0, 255);
-                defElement(4, F("Value"), light_value, 0, 255);
-                defElement(5, F("Anim."), light_animation, 0, 2);
+                defElement(3, F("Sat"), light_saturation, 0, 255);
+                defElement(4, F("Val"), light_value, 0, 255);
+                defElement(5, F("Anim"), light_animation, 0, 2);
                 break;
             }
 
@@ -50,7 +50,7 @@ void loadInterface(){
                 title_list = 1;
                 defElement(0, F("Plugs"), home_inter);
                 defElement(1, F("Num"), &temp_num_plug, 0, 3);
-                defElement(2, F("Limit"), plug_limit, 0, 255);
+                defElement(2, F("Lim"), plug_limit, 0, 255);
                 defElement(3, F("Trigg"), plug_trigg, 0, 1);
                 break;
             }
@@ -62,7 +62,7 @@ void loadInterface(){
                 defElement(1, F("Min"), &temp_minute, 0, 59);
                 defElement(2, F("Hour"), &temp_hour, 0, 23);
                 defElement(3, F("Day"), &temp_day, 1, 31);
-                defElement(4, F("Month"), &temp_month, 1, 12);
+                defElement(4, F("Mon"), &temp_month, 1, 12);
                 defElement(5, F("Year"), &temp_year, 0, 99);
                 break;
             }
@@ -141,9 +141,13 @@ void loadInterface(){
                     }
                 }
 
+                //display.drawFastVLine(127, 39 - now.second() * 28 / 60, now.second() * 28 / 60 + 1, SSD1306_WHITE);
+                display.setCursor(110, 0);
+                printZero(now.second());
+
                 if (digitalRead(MW_DATA)){
-                    display.setCursor(120, 0);
-                    display.print('*');
+                    display.setCursor(58, 0);
+                    display.print((char)126);
                 }
                 
                 // Just for testing purposes

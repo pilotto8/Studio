@@ -22,20 +22,16 @@ byte addTimer(byte time_span, byte plugs, bool invert){
         }
     }
     else {
-        
+        for (i = num_timer; i >= c && i <= max_timer; i--){
+            alarm_timer[i + 1] = alarm_timer[i];
+        }
+        alarm_timer[c].time_span = time_span;
+        alarm_timer[c].plugs = plugs;
         if (c == 0){
-            alarm_timer[c].time_span = time_span;
-            alarm_timer[c].plugs = plugs;
             rtc.clearAlarm(1);
             setTimer();
         }
-        else {
-            for (i = num_timer; i >= c; i--){
-                alarm_timer[i + 1] = alarm_timer[i];
-            }
-            alarm_timer[c].time_span = time_span;
-            alarm_timer[c].plugs = plugs;
-        }
+
         num_timer++;
     }
     return c;

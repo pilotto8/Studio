@@ -9,23 +9,19 @@ void setup(){
 
     FastLED.addLeds<LED_TYPE, LED_PIN, COLOR_ORDER>(leds, NUM_LEDS).setCorrection( TypicalLEDStrip );
     FastLED.setBrightness(BRIGHTNESS);
+    digitalWrite(WAKE_SERIAL, 0);
 }
 
 void loop(){
-    //Serial.println(analogRead(MICROPHONE));
-
     if (new_config){
         animationHandle();
-    }
-    if (serial_call){
-        new_config = 1;
-        serial_call = 0;
     }
 }
 
 void serialEvent(){
+    //serial_call = 1;
     if (Serial.available() > 0){
-        Serial.readBytes(led_config, 4);
-        serial_call = 1;
+        Serial.readBytes(led_config, 5);
+        new_config = 1;
     }
 }

@@ -28,7 +28,7 @@ void setup() {
 
     pinMode(WAKE_SERIAL, OUTPUT);
     pinMode(INTERRUPT, INPUT);
-    attachInterrupt(digitalPinToInterrupt(INTERRUPT), serialInterrupt, RISING);
+    //attachInterrupt(digitalPinToInterrupt(INTERRUPT), pushSerial, RISING);
     
     #if OLED
     oledInit();
@@ -100,8 +100,8 @@ void loop() {
     #if MOOVEMENT
         checkMoovement();
     #endif
-}
 
-void serialInterrupt(){
-
+    /*if (digitalRead(INTERRUPT)){
+        pushSerial();
+    }*/
 }

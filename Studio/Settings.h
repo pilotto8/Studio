@@ -53,7 +53,7 @@ bool title_list;
 
 // RTC
 #include <RTClib.h>
-#define max_timer 8
+#define max_timer 7
 RTC_DS3231 rtc;
 DateTime now;
 byte hour;
@@ -166,6 +166,13 @@ unsigned long int no_moovement;
 byte moove_timer = 1;
 
 // Microphone
-unsigned long int no_microphone;
+/*unsigned long int no_microphone;
 byte tap_map[5];
-byte tap_index;
+byte tap_index;*/
+
+
+// Serial comunication
+/*#include <AceCRC.h>
+using namespace ace_crc;*/
+char data_light[5];
+bool requested;
