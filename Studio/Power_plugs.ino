@@ -13,8 +13,6 @@ void pushPlugState(byte plug, byte state){
 
     pointerPlug(3 - plug);
     if (*plug_limit > 0){
-        //*plug_reference = addTimer(*plug_limit, 1 << (7 - plug), 1);
-
         if (state){
             *plug_reference = addTimer(*plug_limit, 1 << (7 - plug), 0);
         }

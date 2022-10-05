@@ -59,12 +59,22 @@ void setup() {
     regState[0] = EEPROM.read(0);
     regState[1] = EEPROM.read(1);
     if (regState[1] << 1 != 0){ //Recovery from register corruption (buttons wuldn't works)
-        regState[1] >>= 7;
-        regState[1] <<= 7;
+        regState[1] >>= 6;
+        regState[1] <<= 6;
     }
     pushBits();
-    for (byte i = 4; i < 9; i++){
-        digitalWrite(i - 2, readBits(i));
+    for (byte i = 0; i < 4; i++){
+        byte state = readBits(i + 4);
+        byte plug = i - 1;
+        if (state){
+            pointerPlug(3 - plug);
+            if (*plug_limit > 0){
+                *plug_reference = addTimer(*plug_limit, 1 << (7 - plug), 0);
+            }
+
+            digitalWrite(i + 3, 1);
+        }
+        
     }
 
     update_clock = millis() + 200;
@@ -100,8 +110,4 @@ void loop() {
     #if MOOVEMENT
         checkMoovement();
     #endif
-
-    /*if (digitalRead(INTERRUPT)){
-        pushSerial();
-    }*/
 }
