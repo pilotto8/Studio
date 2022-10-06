@@ -10,7 +10,6 @@ void pushPlugState(byte plug, byte state){
     }
     digitalWrite(plug + 3, state);
 
-
     pointerPlug(3 - plug);
     if (*plug_limit > 0){
         if (state){

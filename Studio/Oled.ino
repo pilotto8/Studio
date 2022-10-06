@@ -92,6 +92,19 @@ void loadInterface(){
                 resume_registers();
                 interface = home_inter;
             }
+
+            if (update_clock_data){
+                update_clock_data = 0;
+                oled_update = 1;
+            }
+
+            if (oled_update){
+                oled_update = 0;
+                display.clearDisplay();
+                display.setCursor(0, 0);
+                display.print(alarm_timer[0].time_span);
+                display.display();
+            }
             break;
         }
 
@@ -110,9 +123,9 @@ void loadInterface(){
             }
 
             if (oled_update){
-                display.clearDisplay();
                 oled_update = 0;
-                getTime();
+                display.clearDisplay();
+                //getTime();
 
                 display.setTextSize(4);
                 display.setCursor(5, 10);
@@ -140,8 +153,6 @@ void loadInterface(){
                         printPlugBalls(90, 42 + 8 * i, i);
                     }
                 }
-
-                //display.drawFastVLine(127, 39 - now.second() * 28 / 60, now.second() * 28 / 60 + 1, SSD1306_WHITE);
                 display.setCursor(110, 0);
                 printZero(now.second());
 
@@ -149,15 +160,6 @@ void loadInterface(){
                     display.setCursor(58, 0);
                     display.print((char)126);
                 }
-                
-                // Just for testing purposes
-                /*display.setCursor(0,55);
-                display.print(moovement_state);
-                display.print(digitalRead(LED_BUTTON));
-                display.print(digitalRead(MW_DATA));
-                display.drawFastHLine(0, 63, 128 - ((millis() - no_moovement) * 128 / (moove_timer * 60000)), SSD1306_WHITE);*/
-                //
-
                 display.display();
             }
             break;

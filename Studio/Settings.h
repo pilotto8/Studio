@@ -69,6 +69,7 @@ struct {
 byte num_timer;
 byte temp_time_span;
 byte temp_plugs;
+byte prev_minute;
 
 byte temp_minute;
 byte temp_hour;

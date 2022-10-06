@@ -41,6 +41,8 @@ void parExecutor(byte i){
                 byte temp_second = 0;
                 if (i == 0){
                     rtc.clearAlarm(1);
+                }
+                else {
                     temp_second = now.second();
                 }
                 rtc.adjust(DateTime(temp_year + 2000, temp_month, temp_day, temp_hour, temp_minute, temp_second));

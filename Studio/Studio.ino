@@ -77,7 +77,7 @@ void setup() {
         
     }
 
-    update_clock = millis() + 200;
+    update_clock = millis();
     no_interaction = millis();
     no_moovement = millis();
     #endif

@@ -60,10 +60,11 @@ void deleteTimer(byte alarm){
     for (i = alarm; i < num_timer; i++){
         alarm_timer[i] = alarm_timer[i + 1];
     }
+    if (alarm == 0 && num_timer - 1 > 0){
+        setTimer();
+    }
     num_timer--;
 }
-
-byte prev_minute;
 
 void checkTimer(){
     getTime();
@@ -74,10 +75,7 @@ void checkTimer(){
                 pushPlugState(i, 2);
             }
         }
-        deleteTimer(0);
-        if (num_timer > 0){
-            setTimer();
-        }
+        deleteTimer(0); // In this case the function will also set the next timer
         savePlugState();
     }
 
@@ -85,7 +83,7 @@ void checkTimer(){
         prev_minute = now.minute();
         adjustTimer();
 
-        if (interface == clock_inter && selector){ // Just for design purposes
+        if (interface == clock_inter && selector){ // Just for design purposes (update set clock interface)
             saveTempData();
             oled_update = 1;
         }
