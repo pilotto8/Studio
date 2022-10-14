@@ -5,7 +5,7 @@ void pushBits(){
     SET(PORTD, 7);
 }
 
-void setBits(byte a, byte b, byte bit){
+/*void setBits(byte a, byte b, byte bit){
     if (b > 15){
         b = 15;
     }
@@ -22,37 +22,16 @@ void setBits(byte a, byte b, byte bit){
         }
     }
     if (bit == 1){
-        if (reg_freezed){
-            temp_regState[0] |= temp[0];
-            temp_regState[1] |= temp[1];
-        }
-        else {
-            regState[0] |= temp[0];
-            regState[1] |= temp[1];
-        }
-        
+        regState[0] |= temp[0];
+        regState[1] |= temp[1];
     }
     else if (bit == 0){
-        if (reg_freezed){
-            temp_regState[0] -= (temp_regState[0] & temp[0]);
-            temp_regState[1] -= (temp_regState[1] & temp[1]);
-        }
-        else {
-            regState[0] -= (regState[0] & temp[0]);
-            regState[1] -= (regState[1] & temp[1]);
-        }
-        
+        regState[0] -= (regState[0] & temp[0]);
+        regState[1] -= (regState[1] & temp[1]);
     }
     else if (bit == 2){
-        if (reg_freezed){
-            temp_regState[0] ^= temp[0];
-            temp_regState[1] ^= temp[1];
-        }
-        else {
-            regState[0] ^= temp[0];
-            regState[1] ^= temp[1];
-        }
-        
+        regState[0] ^= temp[0];
+        regState[1] ^= temp[1];
     }
     reg_update = 1;
 }
@@ -62,18 +41,12 @@ void setBits(byte a, byte bit){
 }
 
 bool readBits(byte a){
-    byte temp;
-    if (reg_freeezed){
-        temp = temp_regState[a / 8] << (a % 8);
-    }
-    else{
-        temp = regState[a / 8] << (a % 8);
-    }
+    byte temp = regState[a / 8] << (a % 8);
     if (temp >> 7){
         return 1;
     }
     return 0;
-}
+}*/
 
 
 void setBits(byte* byt, byte a, byte bit){

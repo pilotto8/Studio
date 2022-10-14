@@ -1,8 +1,15 @@
 void pushPlugState(byte plug, byte state){
+    
+
     if (state == 2){
         state = !readBits(plug + 5);
     }
-    setBits(plug + 5, state);
+    if (interface != alarm_inter && interface != sleep_inter){
+        setBits(plug + 5, state);
+    }
+    else {
+        setBits(&temp_regState[(plug + 5) / 8], (plug + 5) % 8, state);
+    }
     digitalWrite(plug + 3, state);
 
     pointerPlug(3 - plug);
@@ -22,14 +29,8 @@ void pushPlugState(byte plug, byte state){
 }
 
 void savePlugState(){
-    if (reg_freezed){
-        EEPROM.update(0, temp_regState[0]);
-        EEPROM.update(1, temp_regState[1]);
-    }
-    else {
-        EEPROM.update(0, regState[0]);
-        EEPROM.update(1, regState[1]);
-    }
+    EEPROM.update(0, regState[0]);
+    EEPROM.update(1, regState[1]);
 }
 
 void pointerPlug(byte plug){
