@@ -22,16 +22,37 @@ void setBits(byte a, byte b, byte bit){
         }
     }
     if (bit == 1){
-        regState[0] |= temp[0];
-        regState[1] |= temp[1];
+        if (reg_freezed){
+            temp_regState[0] |= temp[0];
+            temp_regState[1] |= temp[1];
+        }
+        else {
+            regState[0] |= temp[0];
+            regState[1] |= temp[1];
+        }
+        
     }
     else if (bit == 0){
-        regState[0] -= (regState[0] & temp[0]);
-        regState[1] -= (regState[1] & temp[1]);
+        if (reg_freezed){
+            temp_regState[0] -= (temp_regState[0] & temp[0]);
+            temp_regState[1] -= (temp_regState[1] & temp[1]);
+        }
+        else {
+            regState[0] -= (regState[0] & temp[0]);
+            regState[1] -= (regState[1] & temp[1]);
+        }
+        
     }
     else if (bit == 2){
-        regState[0] ^= temp[0];
-        regState[1] ^= temp[1];
+        if (reg_freezed){
+            temp_regState[0] ^= temp[0];
+            temp_regState[1] ^= temp[1];
+        }
+        else {
+            regState[0] ^= temp[0];
+            regState[1] ^= temp[1];
+        }
+        
     }
     reg_update = 1;
 }
