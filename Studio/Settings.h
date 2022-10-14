@@ -90,6 +90,7 @@ byte button_pulse;
 bool led_button;
 
 bool reg_update;
+bool reg_freezed;
 enum buttons{
     null,
     up,

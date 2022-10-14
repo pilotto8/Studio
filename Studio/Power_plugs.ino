@@ -1,4 +1,6 @@
 void pushPlugState(byte plug, byte state){
+    
+
     if (state == 2){
         state = !readBits(plug + 5);
     }

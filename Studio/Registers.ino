@@ -41,7 +41,13 @@ void setBits(byte a, byte bit){
 }
 
 bool readBits(byte a){
-    byte temp = regState[a / 8] << (a % 8);
+    byte temp;
+    if (reg_freeezed){
+        temp = temp_regState[a / 8] << (a % 8);
+    }
+    else{
+        temp = regState[a / 8] << (a % 8);
+    }
     if (temp >> 7){
         return 1;
     }
@@ -63,6 +69,14 @@ void setBits(byte* byt, byte a, byte bit){
     }
 }
 
+void setBits(byte* byt, byte a, byte b, byte bit){
+    a %= 8;
+    b %= 8;
+    for (; a <= b; a++){
+        setBits(byt, a, bit);
+    }
+}
+
 
 bool readBits(byte* byt, byte a){
     byte temp = *byt << a;
@@ -77,12 +91,14 @@ void freeze_registers(){
     temp_regState[1] = regState[1];
     regState[0] = 0;
     regState[1] = 0;
+    reg_freezed = 1;
     reg_update = 1;
 }
 
 void resume_registers(){
     regState[0] = temp_regState[0];
     regState[1] = temp_regState[1];
+    reg_freezed = 0;
     reg_update = 1;
 }
 
