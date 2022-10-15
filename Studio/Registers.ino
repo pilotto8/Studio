@@ -5,7 +5,7 @@ void pushBits(){
     SET(PORTD, 7);
 }
 
-/*void setBits(byte a, byte b, byte bit){
+void setBits(bool select, byte a, byte b, byte bit){
     if (b > 15){
         b = 15;
     }
@@ -22,31 +22,60 @@ void pushBits(){
         }
     }
     if (bit == 1){
-        regState[0] |= temp[0];
-        regState[1] |= temp[1];
+        if (select){
+            temp_regState[0] |= temp[0];
+            temp_regState[1] |= temp[1];
+        }
+        else {
+            regState[0] |= temp[0];
+            regState[1] |= temp[1];
+        }
+        
     }
     else if (bit == 0){
-        regState[0] -= (regState[0] & temp[0]);
-        regState[1] -= (regState[1] & temp[1]);
+        if (select){
+            temp_regState[0] -= (temp_regState[0] & temp[0]);
+            temp_regState[1] -= (temp_regState[1] & temp[1]);
+        }
+        else {
+            regState[0] -= (regState[0] & temp[0]);
+            regState[1] -= (regState[1] & temp[1]);
+        }
+        
     }
     else if (bit == 2){
-        regState[0] ^= temp[0];
-        regState[1] ^= temp[1];
+        if (select){
+            temp_regState[0] ^= temp[0];
+            temp_regState[1] ^= temp[1];
+        }
+        else {
+            regState[0] ^= temp[0];
+            regState[1] ^= temp[1];
+        }
+        
     }
-    reg_update = 1;
+    if (!select){
+        reg_update = 1;
+    }
 }
 
-void setBits(byte a, byte bit){
-    setBits(a, a, bit);
+void setBits(bool select, byte a, byte bit){
+    setBits(select, a, a, bit);
 }
 
-bool readBits(byte a){
-    byte temp = regState[a / 8] << (a % 8);
+bool readBits(bool select, byte a){
+    byte temp;
+    if (select){
+        temp = temp_regState[a / 8] << (a % 8);
+    }
+    else{
+        temp = regState[a / 8] << (a % 8);
+    }
     if (temp >> 7){
         return 1;
     }
     return 0;
-}*/
+}
 
 
 void setBits(byte* byt, byte a, byte bit){

@@ -174,7 +174,5 @@ byte tap_index;*/
 
 
 // Serial comunication
-/*#include <AceCRC.h>
-using namespace ace_crc;*/
-char data_light[5];
+char data_light[4];
 bool requested;

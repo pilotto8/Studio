@@ -4,16 +4,16 @@ byte findButton(){
     
     setBits(13, 15, 1);
     while(c >= 1){
-        setBits(i, i + c - 1, 0);
+        setBits(0, i, i + c - 1, 0);
         pushBits();
-        setBits(i, i + c - 1, 1);
+        setBits(0, i, i + c - 1, 1);
         if (digitalRead(DATA_IN)){
             i += c;
         }
         c /= 2;
     }
     if (!(i % 2)){
-        setBits(i, i + 1, 0);
+        setBits(0, i, i + 1, 0);
         pushBits();
     }
     reg_update = 0;
@@ -35,7 +35,7 @@ void buttonsHandle(){
                     case 4 ... 7:{
                         if (interface == alarm_inter){
                             setBits(&temp_plugs, button - 4, 2);
-                            setBits(button + 1, 2);
+                            setBits(0, button + 1, 2);
                         }
                         break;
                     }
@@ -56,7 +56,7 @@ void buttonsHandle(){
                     freeze_registers();
                     temp_plugs = 0;
                     setBits(&temp_plugs, button - 4, 1);
-                    setBits(button + 1, 1);
+                    setBits(0, button + 1, 1);
                     byte timerFound = findTimerPlug(button - 4);
                     if (timerFound){
                         temp_time_span = alarm_timer[timerFound - 1].time_span;
@@ -86,7 +86,7 @@ void buttonsHandle(){
 
 
         if (button){
-            setBits(9, 15, 0); // Clear button's bits
+            setBits(0, 9, 15, 0); // Clear button's bits
             if (button > 3){
                 if (interface != alarm_inter){ // To be able to select the power plugs
                     if (millis() - last_millis < long_press){
