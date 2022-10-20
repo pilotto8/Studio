@@ -82,7 +82,6 @@ byte temp_year;
 // Registers and buttons
 #define CLR(x,y) (x&=(~(1<<y)))
 #define SET(x,y) (x|=(1<<y))
-#define eeprom_offset 2
 byte regState[2];
 byte temp_regState[2];
 byte button;
@@ -110,6 +109,9 @@ unsigned long int last_millis_1;
 
 // EEPROM
 #include <EEPROM.h>
+#define eeprom_offset 2
+#define eeprom_first_string 100
+const byte string_bytes[] PROGMEM = {7, 5, 5, 5, 4, 5, 4, 3, 3, 3, 4, 5, 3, 3, 5, 5, 3, 4, 3, 3, 4};
 
 // Power plugs
 byte temp_num_plug;

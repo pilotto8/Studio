@@ -93,7 +93,7 @@ void loadInterface(){
                 interface = home_inter;
             }
 
-            if (update_clock_data){
+            /*if (update_clock_data){
                 update_clock_data = 0;
                 oled_update = 1;
             }
@@ -104,7 +104,7 @@ void loadInterface(){
                 display.setCursor(0, 0);
                 display.print(alarm_timer[0].time_span);
                 display.display();
-            }
+            }*/
             break;
         }
 
