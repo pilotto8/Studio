@@ -5,6 +5,10 @@ void checkMoovement(){
             sendLightData(1);
             no_moovement = millis();
         }
+        else if (digitalRead(MW_DATA)){
+            sendLightData(0, 255, 255, 6);
+        }
+
         if (interface != sleep_inter && millis() - no_moovement >= 720000){
             interface = sleep_inter;
         }

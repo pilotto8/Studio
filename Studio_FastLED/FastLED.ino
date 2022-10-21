@@ -134,6 +134,23 @@ void animationHandle(){
             }
             break;
         }
+        case 6:{
+            if (new_config == 1){
+                new_config = 2;
+                pointer = 0;
+            }
+            leds[(pointer - 1) + 10] = 0;
+            leds[(pointer - 1) + 9] = 0;
+            leds[pointer + 10] = CHSV(led_config[hue], led_config[saturation], led_config[value] * (10 / (10 - pointer)));
+            leds[pointer + 9] = leds[pointer + 10];
+            singleRow(pointer + 10);
+            singleRow(pointer + 9);
+            pointer++;
+            if (pointer == 10){
+                new_config = 0;
+            }
+            break;
+        }
     }
     FastLED.show();
     FastLED.delay(1000 / UPDATES_PER_SECOND);

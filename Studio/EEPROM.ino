@@ -88,7 +88,7 @@ String downloadString(byte num_string){
     String temp = 0;
     for (i = 0, q = 0; i < num_string; i++, q += string_bytes[i]){}
     for (i = 0; i < string_bytes[i]; i++){
-        temp += (char)EEPROM.read(q + i);
+        temp += (char)EEPROM.read(eeprom_first_string + q + i);
     }
     return temp;
 }

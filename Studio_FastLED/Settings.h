@@ -34,6 +34,7 @@ struct{
     byte value;
     byte sign;
 }led_star[100];
+byte pointer;
 
 // Serial
 bool serial_call;
