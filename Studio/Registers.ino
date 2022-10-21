@@ -5,7 +5,7 @@ void pushBits(){
     SET(PORTD, 7);
 }
 
-void setBits(bool select, byte a, byte b, byte bit){
+void setSReg(bool select, byte a, byte b, byte bit){
     if (b > 15){
         b = 15;
     }
@@ -59,11 +59,11 @@ void setBits(bool select, byte a, byte b, byte bit){
     }
 }
 
-void setBits(bool select, byte a, byte bit){
-    setBits(select, a, a, bit);
+void setSReg(bool select, byte a, byte bit){
+    setSReg(select, a, a, bit);
 }
 
-bool readBits(bool select, byte a){
+bool readSReg(bool select, byte a){
     byte temp;
     if (select){
         temp = temp_regState[a / 8] << (a % 8);

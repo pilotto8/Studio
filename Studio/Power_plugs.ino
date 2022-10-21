@@ -1,8 +1,8 @@
 void pushPlugState(byte plug, byte state){
     if (state == 2){
-        state = !readBits(reg_freezed, plug + 5);
+        state = !readSReg(reg_freezed, plug + 5);
     }
-    setBits(reg_freezed, plug + 5, state);
+    setSReg(reg_freezed, plug + 5, state);
     digitalWrite(plug + 3, state);
 
     pointerPlug(3 - plug);

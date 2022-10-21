@@ -64,7 +64,7 @@ void setup() {
     }
     pushBits();
     for (byte i = 0; i < 4; i++){
-        byte state = readBits(0, i + 4);
+        byte state = readSReg(0, i + 4);
         byte plug = i - 1;
         if (state){
             pointerPlug(3 - plug);

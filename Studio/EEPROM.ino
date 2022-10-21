@@ -83,7 +83,7 @@ void parExecutor(byte i){
     }
 }
 
-String downloadString(byte num_string){
+/*String downloadString(byte num_string){
     byte i, q;
     String temp = 0;
     for (i = 0, q = 0; i < num_string; i++, q += string_bytes[i]){}
@@ -91,4 +91,4 @@ String downloadString(byte num_string){
         temp += (char)EEPROM.read(eeprom_first_string + q + i);
     }
     return temp;
-}
+}*/
