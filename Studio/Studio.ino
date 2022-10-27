@@ -2,10 +2,10 @@
 #define OLED 1
 #define RTC 1
 #define MOOVEMENT 1
-volatile byte* NEW_PARAMETER[] = {
+/*volatile byte* NEW_PARAMETER[] = {
 
 0}; // Just for developing purposes. If there are new parameters just put them here one time
-
+*/
 
 // Debug flags
 #define shift_setup 0

@@ -5,6 +5,7 @@ void checkMoovement(){
             moovement_state = 1;
             sendLightData(1);
             no_moovement = millis();
+            ///break; //to try!!!!!!!!
         }
         else if (moove_wake){
             if (digitalRead(MW_DATA)){
@@ -16,6 +17,9 @@ void checkMoovement(){
             }
             else if (millis() / 1000 - mill_wake_ignore >= 1){
                 mill_wake = millis() / 1000;
+            }
+            else if (millis() / 1000 - mill_wake_ignore == 4){
+                sendLightData(0, 0, 0, 0);
             }
         }
 
