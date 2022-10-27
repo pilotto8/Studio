@@ -29,7 +29,8 @@ void loadInterface(){
                 defElement(1, F("Light"), light_inter);
                 defElement(2, F("Plugs"), plug_inter);
                 defElement(3, F("Clock"), clock_inter);
-                defElement(4, F("Wake"), &moove_timer, 1, 10);
+                defElement(4, F("Moove"), moovement_inter);
+                //defElement(4, F("Wake"), &moove_timer, 1, 10);
                 break;
             }
 
@@ -64,7 +65,13 @@ void loadInterface(){
                 defElement(3, F("Day"), &temp_day, 1, 31);
                 defElement(4, F("Mon"), &temp_month, 1, 12);
                 defElement(5, F("Year"), &temp_year, 0, 99);
-                break;///prova
+                break;
+            }
+            case moovement_inter:{
+                title_list = 1;
+                defElement(0, F("Time"), &moove_timer, 1, 10);
+                defElement(1, F("Wake"), &moove_wake, 0, 1);
+                break;
             }
 
             case alarm_inter:{

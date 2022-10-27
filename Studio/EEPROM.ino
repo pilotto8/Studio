@@ -8,7 +8,7 @@ const byte* address[] {
     &light_saturation_0, &light_saturation_1, &light_saturation_2,
     &light_value_0, &light_value_1, &light_value_2,
     &light_animation_0, &light_animation_1, &light_animation_2,
-    &moove_timer
+    &moove_timer, &moove_wake
     ,0};
 
 void writeParam(byte* pointer, byte value){

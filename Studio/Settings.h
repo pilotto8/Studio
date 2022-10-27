@@ -31,7 +31,8 @@ enum interfaces{
     light_inter,
     plug_inter,
     clock_inter,
-    alarm_inter
+    alarm_inter,
+    moovement_inter
 };
 bool oled_update;
 byte interface = home_inter;
@@ -110,8 +111,8 @@ unsigned long int last_millis_1;
 // EEPROM
 #include <EEPROM.h>
 #define eeprom_offset 2
-#define eeprom_first_string 100
-const byte string_bytes[] PROGMEM = {7, 5, 5, 5, 4, 5, 4, 3, 3, 3, 4, 5, 3, 3, 5, 5, 3, 4, 3, 3, 4};
+/*#define eeprom_first_string 100
+const byte string_bytes[] PROGMEM = {7, 5, 5, 5, 4, 5, 4, 3, 3, 3, 4, 5, 3, 3, 5, 5, 3, 4, 3, 3, 4};*/
 
 // Power plugs
 byte temp_num_plug;
@@ -166,8 +167,11 @@ unsigned long int no_interaction;
 // Microwave sensor
 bool moovement_state = 1;
 unsigned long int no_moovement;
+unsigned long int mill_wake;
+unsigned long int mill_wake_ignore;
 
-byte moove_timer = 1;
+byte moove_timer;
+byte moove_wake;
 
 // Microphone
 /*unsigned long int no_microphone;
