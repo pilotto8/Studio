@@ -8,15 +8,15 @@ void checkMoovement(){
         }
         else if (moove_wake){
             if (digitalRead(MW_DATA)){
-                mill_wake_ignore = millis();
-                if (millis() - mill_wake >= 4000){
+                mill_wake_ignore = millis() / 1000;
+                sendLightData(0, 255, 255, 6);
+                if (millis() / 1000 - mill_wake >= 4){
                     goto someone_here;
                 }
             }
-            else if (millis() - mill_wake_ignore >= 1000){
-                mill_wake = millis();
+            else if (millis() / 1000 - mill_wake_ignore >= 1){
+                mill_wake = millis() / 1000;
             }
-            //sendLightData(0, 255, 255, 6);
         }
 
         if (interface != sleep_inter && millis() - no_moovement >= 720000){
@@ -30,6 +30,9 @@ void checkMoovement(){
         if (LEDbuttonTrigg() || millis() - no_moovement >= moove_timer * 60000){
             moovement_state = 0;
             sendLightData(0);
+            if (moove_wake){
+                mill_wake = millis() / 1000;
+            }
             for (byte i = 0; i < 4; i++){
                 pointerPlug(3 - i);
                 if (*plug_trigg){

@@ -1,13 +1,14 @@
 void sendLightData(byte hue, byte saturation, byte value, byte animation){
-    SET(PORTB, 5);
-    data_light[0] = hue;
-    data_light[1] = saturation;
-    data_light[2] = value;
-    data_light[3] = animation;
-    /*uint8_t crc = crc8_bit::crc_calculate(data_light, 4);
-    data_light[4] = crc;*/
-    pushSerial();
-    CLR(PORTB, 5);
+    if (data_light[0] != hue || data_light[1] != saturation || data_light[2] != value || data_light[3] != animation){
+        SET(PORTB, 5);
+        data_light[0] = hue;
+        data_light[1] = saturation;
+        data_light[2] = value;
+        data_light[3] = animation;
+        pushSerial();
+        CLR(PORTB, 5);
+    }
+    
 }
 
 void sendLightData(byte state){

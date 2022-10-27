@@ -167,8 +167,8 @@ unsigned long int no_interaction;
 // Microwave sensor
 bool moovement_state = 1;
 unsigned long int no_moovement;
-unsigned long int mill_wake;
-unsigned long int mill_wake_ignore;
+unsigned int mill_wake;
+unsigned int mill_wake_ignore;
 
 byte moove_timer;
 byte moove_wake;
