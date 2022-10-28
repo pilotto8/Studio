@@ -7,7 +7,7 @@ void checkMoovement(){
             no_moovement = millis();
             ///break; //to try!!!!!!!!
         }
-        else if (moove_wake && (millis() - no_moovement >= 730000)){ //For now 10 seconds to leave
+        else if (moove_wake && (millis() - no_moovement >= 720000 + 10000 * shutdown_method)){ //10 seconds to leave
             if (digitalRead(MW_DATA)){
                 mill_wake_ignore = millis() / 1000;
                 sendLightData(0, 255, 255, 6);
@@ -32,6 +32,12 @@ void checkMoovement(){
             no_moovement = millis();
         }
         if (LEDbuttonTrigg() || millis() - no_moovement >= moove_timer * 60000){
+            if (millis() - no_moovement >= moove_timer * 60000){
+                shutdown_method = 0;
+            }
+            else {
+                shutdown_method = 1;
+            }
             moovement_state = 0;
             sendLightData(0);
             if (moove_wake){

@@ -172,6 +172,7 @@ unsigned int mill_wake_ignore;
 
 byte moove_timer;
 byte moove_wake;
+bool shutdown_method;
 
 // Microphone
 /*unsigned long int no_microphone;
