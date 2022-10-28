@@ -7,7 +7,7 @@ void checkMoovement(){
             no_moovement = millis();
             ///break; //to try!!!!!!!!
         }
-        else if (moove_wake){
+        else if (moove_wake && (millis() - no_moovement >= 730000)){ //For now 10 seconds to leave
             if (digitalRead(MW_DATA)){
                 mill_wake_ignore = millis() / 1000;
                 sendLightData(0, 255, 255, 6);
