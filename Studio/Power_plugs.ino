@@ -19,7 +19,7 @@ void pushPlugState(byte plug, byte state){
             }
         }
     }
-}
+}//prova
 
 void savePlugState(){
     if (reg_freezed){
