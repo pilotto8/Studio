@@ -17,6 +17,9 @@ CRGB leds[NUM_LEDS];
 
 // FastLED
 byte led_config[5];
+byte led_config_queue[5];
+bool queue;
+bool change_color;
 byte new_config;
 
 enum parameters{
@@ -28,7 +31,7 @@ enum parameters{
 };
 
 // Animatinos
-float offset;
+float offset -0.25;
 struct{
     byte speed;
     byte value;

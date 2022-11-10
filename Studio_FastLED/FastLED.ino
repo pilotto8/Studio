@@ -2,8 +2,6 @@ void animationHandle(){
     switch (led_config[animation]){
         case 0 ... 1:{
             for (byte i = 0; i < 20; i++){
-                
-
                 leds[i] = CHSV(led_config[hue], led_config[saturation], led_config[value]);
                 singleRow(i);
             }
@@ -13,7 +11,7 @@ void animationHandle(){
         case 2:{
             if (new_config == 1){
                 new_config = 2;
-                offset = -0.25;
+                //offset = -0.25;
             }
             if (offset <= 1.30){
                 byte i;
@@ -32,6 +30,7 @@ void animationHandle(){
                 offset += 0.075;
             }
             else {
+                offset = 1.25;
                 new_config = 0;
             }
             break;
@@ -39,7 +38,7 @@ void animationHandle(){
         case 3:{
             if (new_config == 1){
                 new_config = 2;
-                offset = 1.25;
+                //offset = 1.25;
             }
             if (offset >= -0.30){
                 byte i;
@@ -58,6 +57,7 @@ void animationHandle(){
                 offset -= 0.075;
             }
             else {
+                offset = -0.25;
                 new_config = 0;
             }
             break;
@@ -71,8 +71,6 @@ void animationHandle(){
             }
             byte i, c;
             for (i = 0, c = 0; i < 100; i++){
-                
-                
                 if (led_star[i].value > 0){
                     if (led_star[i].value < led_star[i].speed){
                         led_star[i].value = 0;
@@ -163,7 +161,20 @@ void singleRow(byte i){
     leds[i + 80] = leds[i];
 }
 
-byte rowNeightbour(byte i, byte direction){
+void changeColor(){
+    switch (led_config[4]){
+        case 0:{
+            new_config = 1;
+            break;
+        }
+        case 2:{
+            
+            break;
+        }
+    }
+}
+
+/*byte rowNeightbour(byte i, byte direction){
     byte offset = i / 20;
     i %= 20;
     if (offset % 2){
@@ -181,4 +192,4 @@ byte colNeightbour(byte i, byte direction){
     byte offset = i / 20;
     i %= 20;
     return 0;
-}
+}*/
