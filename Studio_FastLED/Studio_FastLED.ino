@@ -14,6 +14,7 @@ void setup(){
 
 void loop(){
     if (change_color){
+        change_color = 0;
         changeColor();
     }
     if (new_config){
@@ -29,21 +30,23 @@ void loop(){
 void serialEvent(){
     //serial_call = 1;
     if (Serial.available() > 0){
-        Serial.readBytes(led_config_queue, 5);
-        if (led_config_queue[4] == led_config[4]){
+        Serial.read();
+        Serial.read();
+        Serial.readBytes(led_config_queue, 4);
+        if (led_config_queue[animation] == led_config[animation]){
             change_color = 1;
             led_config = led_config_queue;
         }
         else {
             new_config = 1;
         }
-        if (led_config_queue[4] % 2 == 1){
+        if (led_config_queue[animation] % 2 == 1 || led_config_queue[animation] >= wave_on){
             led_config = led_config_queue;
             queue = 0; //ner dubbio
         }
         else if (!queue && !change_color){{
             queue = 1;
-            led_config[4]++;
+            led_config[animation]++;
         }
     }
 }

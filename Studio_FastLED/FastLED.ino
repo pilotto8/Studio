@@ -1,6 +1,6 @@
 void animationHandle(){
     switch (led_config[animation]){
-        case 0 ... 1:{
+        case single_tone_on ... single_tone_off:{
             for (byte i = 0; i < 20; i++){
                 leds[i] = CHSV(led_config[hue], led_config[saturation], led_config[value]);
                 singleRow(i);
@@ -8,7 +8,7 @@ void animationHandle(){
             new_config = 0;
             break;
         }
-        case 2:{
+        case sin_on:{
             if (new_config == 1){
                 new_config = 2;
                 //offset = -0.25;
@@ -35,7 +35,7 @@ void animationHandle(){
             }
             break;
         }
-        case 3:{
+        case sin_off:{
             if (new_config == 1){
                 new_config = 2;
                 //offset = 1.25;
@@ -62,7 +62,7 @@ void animationHandle(){
             }
             break;
         }
-        case 4:{
+        case led_star_on:{
             if (new_config == 1){
                 new_config = 2;
                 for (byte i = 0; i < 100; i++){
@@ -103,7 +103,7 @@ void animationHandle(){
             }
             break;
         }
-        case 5:{
+        case led_star_off:{
             byte i, c;
             for (i = 0, c = 0; i < 100; i++){
                 if (led_star[i].value > 0){
@@ -132,7 +132,7 @@ void animationHandle(){
             }
             break;
         }
-        case 6:{
+        case wave_on:{
             if (new_config == 1){
                 new_config = 2;
                 pointer = 0;
@@ -145,6 +145,23 @@ void animationHandle(){
             singleRow(pointer + 9);
             pointer++;
             if (pointer == 10){
+                new_config = 0;
+            }
+            break;
+        }
+        case wave_off:{
+            if (new_config == 1){
+                new_config = 2;
+                pointer = 10;
+            }
+            leds[(pointer + 1) + 10] = 0;
+            leds[(pointer + 1) + 9] = 0;
+            leds[pointer + 10] = CHSV(led_config[hue], led_config[saturation], led_config[value] * (10 / pointer));
+            leds[pointer + 9] = leds[pointer + 10];
+            singleRow(pointer + 10);
+            singleRow(pointer + 9);
+            pointer--;
+            if (pointer == 0){
                 new_config = 0;
             }
             break;
@@ -168,7 +185,18 @@ void changeColor(){
             break;
         }
         case 2:{
-            
+            for (byte i = 0; i < 20; i++){
+                leds[i] = CHSV(led_config[hue], led_config[saturation], led_config[value]);
+                singleRow(i);
+            }
+            break;
+        }
+        case 4:{
+            for (byte i = 0; i < 100; i++){
+                if (led_star[i].value != 0){
+                    leds[i] = CHSV(led_config[hue], led_config[saturation], led_star[i].value * led_config[value] / 255);
+                }
+            }
             break;
         }
     }

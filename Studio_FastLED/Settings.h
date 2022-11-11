@@ -16,14 +16,13 @@ CRGB leds[NUM_LEDS];
 #define MICROPHONE A0
 
 // FastLED
-byte led_config[5];
-byte led_config_queue[5];
+byte led_config[4];
+byte led_config_queue[4];
 bool queue;
 bool change_color;
 byte new_config;
 
 enum parameters{
-    empty,
     hue,
     saturation,
     value,
@@ -31,6 +30,17 @@ enum parameters{
 };
 
 // Animatinos
+enum animations{
+    single_tone_on,
+    sengle_tone_off,
+    sin_on,
+    sin_off,
+    led_star_on,
+    led_star_off,
+    wave_on,        /// From this animation we don't create a queue
+    wave_off
+};
+
 float offset -0.25;
 struct{
     byte speed;
