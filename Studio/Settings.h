@@ -22,7 +22,7 @@ Adafruit_SSD1306 display(SCREEN_WIDTH, SCREEN_HEIGHT, &Wire, OLED_RESET);
 
 #define rows 5
 #define scrolling_time 10 // *10 [ms]
-#define max_element_list 6
+//#define max_element_list 6
 
 enum interfaces{
     sleep_inter,
@@ -44,7 +44,7 @@ struct {
     byte interface;
     byte min;
     byte max;
-}element_list[max_element_list];
+}element_list[rows];
 byte element_total;
 byte element_selected;
 bool selector = 1;

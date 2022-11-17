@@ -11,7 +11,7 @@ void loadInterface(){
     if (interface != prev_interface){
         prev_interface = interface;
         //Setup interface
-        element_total = 0;
+        //element_total = 0;
         switch (interface){
             case sleep_inter:{
                 display.clearDisplay();
@@ -25,53 +25,33 @@ void loadInterface(){
             }
             case settings_inter:{
                 title_list = 1;
-                defElement(0, F("Setting"), home_inter);
-                defElement(1, F("Light"), light_inter);
-                defElement(2, F("Plugs"), plug_inter);
-                defElement(3, F("Clock"), clock_inter);
-                defElement(4, F("Moove"), moovement_inter);
-                //defElement(4, F("Wake"), &moove_timer, 1, 10);
+                loadElements(0);
                 break;
             }
 
             case light_inter:{
                 pointerProfile(light_profile);
                 title_list = 1;
-                defElement(0, F("Light"), home_inter);
-                defElement(1, F("Prof"), &light_profile, 0, 2);
-                defElement(2, F("Hue"), light_hue, 0, 255);
-                defElement(3, F("Sat"), light_saturation, 0, 255);
-                defElement(4, F("Val"), light_value, 0, 255);
-                defElement(5, F("Anim"), light_animation, 0, 2);
+                loadElements(0);
                 break;
             }
 
             case plug_inter:{
                 pointerPlug(temp_num_plug);
                 title_list = 1;
-                defElement(0, F("Plugs"), home_inter);
-                defElement(1, F("Num"), &temp_num_plug, 0, 3);
-                defElement(2, F("Lim"), plug_limit, 0, 255);
-                defElement(3, F("Trigg"), plug_trigg, 0, 1);
+                loadElements(0);
                 break;
             }
             
             case clock_inter:{
                 saveTempData();
                 title_list = 1;
-                defElement(0, F("Clock"), home_inter);
-                defElement(1, F("Min"), &temp_minute, 0, 59);
-                defElement(2, F("Hour"), &temp_hour, 0, 23);
-                defElement(3, F("Day"), &temp_day, 1, 31);
-                defElement(4, F("Mon"), &temp_month, 1, 12);
-                defElement(5, F("Year"), &temp_year, 0, 99);
+                loadElements(0);
                 break;
             }
             case moovement_inter:{
                 title_list = 1;
-                defElement(0, F("Moove"), home_inter);
-                defElement(1, F("Time"), &moove_timer, 1, 10);
-                defElement(2, F("Wake"), &moove_wake, 0, 1);
+                loadElements(0);
                 break;
             }
 
@@ -245,40 +225,104 @@ void defElement(byte number, String name, byte* pointer, byte min, byte max){
     element_total++;
 }
 
+void loadElements(byte page){
+    element_total = 0;
+    if (page == 0){
+        switch (interface){
+            case settings_inter:{
+                defElement(0, F("Setting"), home_inter);
+                defElement(1, F("Light"), light_inter);
+                defElement(2, F("Plugs"), plug_inter);
+                defElement(3, F("Clock"), clock_inter);
+                defElement(4, F("Moove"), moovement_inter);
+                break;
+            }
+            case light_inter:{
+                defElement(0, F("Light"), home_inter);
+                defElement(1, F("Prof"), &light_profile, 0, 2);
+                defElement(2, F("Hue"), light_hue, 0, 255);
+                defElement(3, F("Sat"), light_saturation, 0, 255);
+                defElement(4, F("Val"), light_value, 0, 255);
+                break;
+            }
+            case plug_inter:{
+                defElement(0, F("Plugs"), home_inter);
+                defElement(1, F("Num"), &temp_num_plug, 0, 3);
+                defElement(2, F("Lim"), plug_limit, 0, 255);
+                defElement(3, F("Trigg"), plug_trigg, 0, 1);
+                break;
+            }
+            case clock_inter:{
+                defElement(0, F("Clock"), home_inter);
+                defElement(1, F("Min"), &temp_minute, 0, 59);
+                defElement(2, F("Hour"), &temp_hour, 0, 23);
+                defElement(3, F("Day"), &temp_day, 1, 31);
+                defElement(4, F("Mon"), &temp_month, 1, 12);
+                break;
+            }
+            case moovement_inter:{
+                defElement(0, F("Moove"), home_inter);
+                defElement(1, F("Time"), &moove_timer, 1, 10);
+                defElement(2, F("Wake"), &moove_wake, 0, 1);
+                break;
+            }
+        }
+    }
+    else if (page == 1){
+        switch (interface){
+            case light_inter:{
+                defElement(0, F("Anim"), light_animation, 0, 2);
+                break;
+            }
+            case clock_inter:{
+                defElement(0, F("Year"), &temp_year, 0, 99);
+                break;
+            }
+        }
+    }
+    
+}
+
 void interfaceList(){
     byte i;
     // Buttons interaction
     if (button_pulse != 0 && button_pulse != -1){
         if (button_pulse == center){
-            if (element_list[element_selected].interface == 0){
+            if (element_list[element_selected % rows].interface == 0){
                 // Some variables may have problems with real time updates so I use a temporaneous variable
                 if (!selector){
-                    *element_list[element_selected].pointer = temp;
-                    eepromUpdate(element_list[element_selected].pointer);
+                    *element_list[element_selected % rows].pointer = temp;
+                    eepromUpdate(element_list[element_selected % rows].pointer);
                 }
                 else {
-                    temp = *element_list[element_selected].pointer;
+                    temp = *element_list[element_selected % rows].pointer;
                 }
                 selector = !selector;
             }
             else {
-                interface = element_list[element_selected].interface;
+                interface = element_list[element_selected % rows].interface;
             }
             button_pulse = 0; // To add on every center command
         }
         else if (button_pulse == up){
             if (selector && element_selected > 0){
+                if (element_selected - 1 != element_selected % rows){
+                    loadElements((element_selected - 1) / rows);
+                }
                 element_selected--;
             }
-            else if (!selector && temp < element_list[element_selected].max){
+            else if (!selector && temp < element_list[element_selected % rows].max){
                 temp++;
             }
         }
         else if (button_pulse == down){
             if (selector && element_selected < element_total - 1){
+                if (element_selected + 1 != element_selected % rows){
+                    loadElements((element_selected + 1) / rows);
+                }
                 element_selected++;
             }
-            else if (!selector && temp > element_list[element_selected].min){
+            else if (!selector && temp > element_list[element_selected % rows].min){
                 temp--;
             }
         }
@@ -291,11 +335,11 @@ void interfaceList(){
         oled_update = 0;
         for (i = 0; i < element_total - (element_selected - element_selected % rows) && i < rows; i++){
             display.setCursor(7, (64 / rows) * i);
-            display.print(element_list[element_selected - (element_selected % rows) + i].name);
+            display.print(element_list[element_selected % rows + i].name);
             display.setCursor(100, (64 / rows) * i);
-            if (element_list[element_selected - (element_selected % rows) + i].interface == 0){
+            if (element_list[element_selected % rows + i].interface == 0){
                 if (!selector && i == element_selected % rows){
-                    if (element_list[element_selected - (element_selected % rows) + i].max == 1 && element_list[element_selected - (element_selected % rows) + i].min == 0){
+                    if (element_list[element_selected % rows + i].max == 1 && element_list[element_selected % rows + i].min == 0){
                         display.print(temp ? F("ON") : F("OFF"));
                     }
                     else {
@@ -303,11 +347,11 @@ void interfaceList(){
                     }
                 }
                 else {
-                    if (element_list[element_selected - (element_selected % rows) + i].max == 1 && element_list[element_selected - (element_selected % rows) + i].min == 0){
-                        display.print(*element_list[element_selected - (element_selected % rows) + i].pointer ? F("ON") : F("OFF"));
+                    if (element_list[element_selected % rows + i].max == 1 && element_list[element_selected % rows + i].min == 0){
+                        display.print(*element_list[element_selected % rows + i].pointer ? F("ON") : F("OFF"));
                     }
                     else {
-                        display.print(*element_list[element_selected - (element_selected % rows) + i].pointer);
+                        display.print(*element_list[element_selected % rows + i].pointer);
                     }
                 }
             }
