@@ -223,9 +223,20 @@ void defElement(byte number, String name, byte* pointer, byte min, byte max){
     element_list[number].max = max;
     element_list[number].interface = 0;
     element_total++;
+
+    #if NEW_PARAMETER
+        if (element_list[number].interface != 0 && (&element_list[number].pointer > element_list[number].max || &element_list[number].pointer < element_list[number].min)){
+            &element_list[number].pointer = element_list[number].min;
+            eepromUpdate(element_list[number].pointer);
+        }
+    #endif
 }
 
 void loadElements(byte page){
+    loadElements(interface, page);
+}
+
+void loadElements(byte interface, byte page){
     element_total = 0;
     if (page == 0){
         switch (interface){

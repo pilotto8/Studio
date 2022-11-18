@@ -2,9 +2,7 @@
 #define OLED 1
 #define RTC 1
 #define MOOVEMENT 1
-volatile byte* NEW_PARAMETER[] = {
-
-0}; // Just for developing purposes. If there are new parameters just put them here one time
+#define NEW_PARAMETER 1 // Just for developing purposes. If there are new parameters just put them here one time
 
 
 // Debug flags
@@ -48,11 +46,12 @@ void setup() {
 
     
     #if !shift_setup
-    if (NEW_PARAMETER[0] != 0){
-        for(byte i = 0; NEW_PARAMETER[i]; i++){ 
-            eepromUpdate(NEW_PARAMETER[i]);
+    #if NEW_PARAMETER
+        for (byte i = 0; i < moovement_inter; i++){
+            loadElements(i, 0);
+            loadElements(i, 1);
         }
-    }
+    #endif
     
     eepromDownload();
     
