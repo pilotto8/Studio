@@ -75,7 +75,7 @@ void parExecutor(byte i){
                     element_list[2].pointer = light_hue;
                     element_list[3].pointer = light_saturation;
                     element_list[4].pointer = light_value;
-                    element_list[5].pointer = light_animation;
+                    //element_list[5].pointer = light_animation;
                 }
             }
             break;
