@@ -1,4 +1,4 @@
-void pushPlugState(byte plug, byte state){
+void pushPlugState(byte plug, byte state){//prova
     if (state == 2){
         state = !readSReg(reg_freezed, plug + 5);
     }
