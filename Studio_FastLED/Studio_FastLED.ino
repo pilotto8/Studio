@@ -44,7 +44,7 @@ void serialEvent(){
             led_config = led_config_queue;
             queue = 0; //ner dubbio
         }
-        else if (!queue && !change_color){{
+        else if (!queue && !change_color){
             queue = 1;
             led_config[animation]++;
         }
