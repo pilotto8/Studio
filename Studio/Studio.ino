@@ -2,7 +2,7 @@
 #define OLED 1
 #define RTC 1
 #define MOOVEMENT 1
-#define NEW_PARAMETER 1 // Just for developing purposes. If there are new parameters just put them here one time
+#define NEW_PARAMETER 0 // Just for developing purposes. If there are new parameters just put this flag on
 
 
 // Debug flags

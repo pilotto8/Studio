@@ -19,7 +19,7 @@ void sendLightData(byte state){
 void pushSerial(){
     byte i;
     Serial.write(0);// 2 bytes to avoid bit corruptions
-    Serial.write(0);
+    //Serial.write(0);
     for (i = 0; i < 4; i++){
         Serial.write(data_light[i]);
     }

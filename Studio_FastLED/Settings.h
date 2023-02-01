@@ -38,7 +38,8 @@ enum animations{
     led_star_on,
     led_star_off,
     wave_on,        /// From this animation we don't create a queue
-    wave_off
+    wave_off,
+    animation_limit
 };
 
 float offset -0.25;
@@ -51,3 +52,8 @@ byte pointer;
 
 // Serial
 bool serial_call;
+
+//EEPROM
+#include <EEPROM.h>
+boolean comunication_failed = 1;
+unsigned long int comunication_timespan;
