@@ -20,8 +20,10 @@ void loop(){
 
 void serialEvent(){
     //serial_call = 1;
+    Serial.read();
+    Serial.read();
     if (Serial.available() > 0){
-        Serial.readBytes(led_config, 5);
+        Serial.readBytes(led_config, 4);
         new_config = 1;
     }
 }
