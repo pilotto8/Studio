@@ -202,6 +202,12 @@ void changeColor(){
     }
 }
 
+void configUnqueue(){
+    for (byte i = 0; i < 4; i++){
+        led_config[i] = led_config_queue[i];
+    }
+}
+
 /*byte rowNeightbour(byte i, byte direction){
     byte offset = i / 20;
     i %= 20;

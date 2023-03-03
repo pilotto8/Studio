@@ -11,10 +11,15 @@ void setup(){
     FastLED.setBrightness(BRIGHTNESS);
     digitalWrite(WAKE_SERIAL, 0);
     //Just to add starting data
-    eeprom.update(0, 28);
-    eeprom.update(1, 170);
-    eeprom.update(2, 255);
-    eeprom.update(3, 2);
+    /*EEPROM.update(0, 28);
+    EEPROM.update(1, 170);
+    EEPROM.update(2, 255);
+    EEPROM.update(3, sin_on);*/
+    /*eepromDownload();
+    for (byte i = 0; i < 20; i++){
+        leds[i] = CHSV(led_config[hue], led_config[saturation], led_config[value]);
+        singleRow(i);
+    }*/
 }
 
 void loop(){
@@ -28,15 +33,16 @@ void loop(){
     else if (queue){
         queue = 0;
         new_config = 1;
-        led_config = led_config_queue;
+        configUnqueue();
     }
 
-    if (millis() - comunication_timespan >= 5000 && !new_config){
+    if (millis() - comunication_timespan >= 5000 && new_config == 0){
         comunication_timespan = millis();
         FastLED.show();
+        FastLED.delay(1000 / UPDATES_PER_SECOND);
         if (comunication_failed){
             eepromDownload();
-            newConfig = 1;
+            new_config = 1;
         }
     }
 }
@@ -47,19 +53,19 @@ void serialEvent(){
         byte i;
         Serial.read();
         //Serial.read();
-        for (i = 0; i < 4; i++){
-            led_config[i] = Serial.read();
-        }
+        //configUnqueue();
         //Serial.readBytes(led_config_queue, 4);
         if (led_config_queue[animation] == led_config[animation]){
             change_color = 1;
-            led_config = led_config_queue;
+            configUnqueue();
         }
         else {
             new_config = 1;
         }
         if (led_config_queue[animation] % 2 == 1 || led_config_queue[animation] >= wave_on){
-            led_config = led_config_queue;
+            for (byte i = 0; i < 4; i++){
+                led_config[i] = led_config_queue[i];
+            }
             queue = 0; //ner dubbio
         }
         else if (!queue && !change_color){

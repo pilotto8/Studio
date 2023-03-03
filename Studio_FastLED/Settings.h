@@ -1,4 +1,5 @@
 #include <FastLED.h>
+#include <EEPROM.h>
 
 #define NUM_LEDS    100
 #define BRIGHTNESS  255
@@ -18,9 +19,9 @@ CRGB leds[NUM_LEDS];
 // FastLED
 byte led_config[4];
 byte led_config_queue[4];
-bool queue;
-bool change_color;
-byte new_config;
+bool queue = 0;
+bool change_color = 0;
+byte new_config = 0;
 
 enum parameters{
     hue,
@@ -32,7 +33,7 @@ enum parameters{
 // Animatinos
 enum animations{
     single_tone_on,
-    sengle_tone_off,
+    single_tone_off,
     sin_on,
     sin_off,
     led_star_on,
@@ -42,7 +43,7 @@ enum animations{
     animation_limit
 };
 
-float offset -0.25;
+float offset = -0.25;
 struct{
     byte speed;
     byte value;
@@ -54,6 +55,5 @@ byte pointer;
 bool serial_call;
 
 //EEPROM
-#include <EEPROM.h>
 boolean comunication_failed = 1;
-unsigned long int comunication_timespan;
+unsigned long int comunication_timespan = 0;
