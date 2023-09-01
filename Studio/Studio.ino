@@ -1,8 +1,11 @@
 #include "Settings.h"
 #define OLED 1
+#define BUTTONS 0
 #define RTC 1
-#define MOOVEMENT 1
-#define NEW_PARAMETER 0 // Just for developing purposes. If there are new parameters just put this flag on
+#define MOOVEMENT 0
+volatile byte* NEW_PARAMETER[] = {
+
+0}; // Just for developing purposes. If there are new parameters just put them here one time
 
 
 // Debug flags
@@ -22,11 +25,11 @@ void setup() {
 
     pinMode(MW_DATA, INPUT);
     pinMode(LED_BUTTON, INPUT_PULLUP);
-    //pinMode(LED_BUILTIN, OUTPUT);
 
     pinMode(WAKE_SERIAL, OUTPUT);
     pinMode(INTERRUPT, INPUT);
-    //attachInterrupt(digitalPinToInterrupt(INTERRUPT), pushSerial, RISING);
+    attachInterrupt(digitalPinToInterrupt(INTERRUPT), pushSerial, RISING);
+    digitalWrite(WAKE_SERIAL, 0);
     
     #if OLED
     oledInit();
@@ -46,12 +49,11 @@ void setup() {
 
     
     #if !shift_setup
-    #if NEW_PARAMETER
-        for (byte i = 0; i < moovement_inter; i++){
-            loadElements(i, 0);
-            loadElements(i, 1);
+    if (NEW_PARAMETER[0] != 0){
+        for(byte i = 0; NEW_PARAMETER[i]; i++){ 
+            eepromUpdate(NEW_PARAMETER[i]);
         }
-    #endif
+    }
     
     eepromDownload();
     
@@ -73,17 +75,21 @@ void setup() {
 
             digitalWrite(i + 3, 1);
         }
+        
     }
 
     update_clock = millis();
     no_interaction = millis();
     no_moovement = millis();
     #endif
+
 }
 
 
 void loop() {
-    buttonsHandle();
+    #if BUTTONS
+        buttonsHandle();
+    #endif
 
     #if OLED
         loadInterface();
@@ -100,7 +106,9 @@ void loop() {
     if (interface != home_inter && interface != sleep_inter && millis() - no_interaction >= 30000){
         selector = 1;
         if (interface == alarm_inter){
+            #if BUTTONS
             resume_registers();
+            #endif
         }
         interface = home_inter;
     }

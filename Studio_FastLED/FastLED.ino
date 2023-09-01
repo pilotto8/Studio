@@ -167,8 +167,10 @@ void animationHandle(){
             break;
         }
     }
-    FastLED.show();
-    FastLED.delay(1000 / UPDATES_PER_SECOND);
+    if (!serial_call){
+        FastLED.show();
+        FastLED.delay(1000 / UPDATES_PER_SECOND);
+    }
 }
 
 void singleRow(byte i){

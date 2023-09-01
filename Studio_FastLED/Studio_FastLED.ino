@@ -4,7 +4,7 @@ void setup(){
     Serial.begin(57600);
     pinMode(WAKE_SERIAL, OUTPUT);
     pinMode(INTERRUPT, INPUT);
-    attachInterrupt(digitalPinToInterrupt(INTERRUPT), serialEvent, RISING);
+    attachInterrupt(digitalPinToInterrupt(INTERRUPT), interrupted, RISING);
     randomSeed(analogRead(MICROPHONE));
 
     FastLED.addLeds<LED_TYPE, LED_PIN, COLOR_ORDER>(leds, NUM_LEDS).setCorrection( TypicalLEDStrip );
@@ -36,7 +36,7 @@ void loop(){
         configUnqueue();
     }
 
-    if (millis() - comunication_timespan >= 5000 && new_config == 0){
+    /*if (!serial_call && millis() - comunication_timespan >= 5000 && new_config == 0){
         comunication_timespan = millis();
         FastLED.show();
         FastLED.delay(1000 / UPDATES_PER_SECOND);
@@ -44,6 +44,9 @@ void loop(){
             eepromDownload();
             new_config = 1;
         }
+    }*/
+    if (serial_call){
+        digitalWrite(WAKE_SERIAL, 1);
     }
 }
 
@@ -79,5 +82,11 @@ void serialEvent(){
             }
         }
         comunication_timespan = millis();
+        serial_call = 0;
+        digitalWrite(WAKE_SERIAL, 0);
     }
+}
+
+void interrupted(){
+
 }
