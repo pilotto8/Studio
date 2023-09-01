@@ -111,8 +111,6 @@ unsigned long int last_millis_1;
 // EEPROM
 #include <EEPROM.h>
 #define eeprom_offset 2
-/*#define eeprom_first_string 100
-const byte string_bytes[] PROGMEM = {7, 5, 5, 5, 4, 5, 4, 3, 3, 3, 4, 5, 3, 3, 5, 5, 3, 4, 3, 3, 4};*/
 
 // Power plugs
 byte temp_num_plug;

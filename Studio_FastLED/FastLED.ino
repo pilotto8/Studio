@@ -167,8 +167,10 @@ void animationHandle(){
             break;
         }
     }
-    FastLED.show();
-    FastLED.delay(1000 / UPDATES_PER_SECOND);
+    if (!serial_call){
+        FastLED.show();
+        FastLED.delay(1000 / UPDATES_PER_SECOND);
+    }
 }
 
 void singleRow(byte i){
@@ -199,6 +201,12 @@ void changeColor(){
             }
             break;
         }
+    }
+}
+
+void configUnqueue(){
+    for (byte i = 0; i < 4; i++){
+        led_config[i] = led_config_queue[i];
     }
 }
 

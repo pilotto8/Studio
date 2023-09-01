@@ -1,12 +1,11 @@
 void sendLightData(byte hue, byte saturation, byte value, byte animation){
     if (data_light[0] != hue || data_light[1] != saturation || data_light[2] != value || data_light[3] != animation){
-        SET(PORTB, 5);
+        digitalWrite(WAKE_SERIAL, 1);
         data_light[0] = hue;
         data_light[1] = saturation;
         data_light[2] = value;
         data_light[3] = animation;
-        pushSerial();
-        CLR(PORTB, 5);
+        //pushSerial();
     }
     
 }
@@ -18,11 +17,12 @@ void sendLightData(byte state){
 
 void pushSerial(){
     byte i;
-    Serial.write(0);// 2 bytes to avoid bit corruptions
-    Serial.write(0);
+    Serial.write(0);// bytes to avoid bit corruptions
+    //Serial.write(0);
     for (i = 0; i < 4; i++){
         Serial.write(data_light[i]);
     }
+    digitalWrite(WAKE_SERIAL, 0);
 }
 
 void pointerProfile(byte profile){
