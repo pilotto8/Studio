@@ -1,7 +1,7 @@
 #include "Settings.h"
 
 void setup(){
-    Serial.begin(57600);
+    Serial.begin(1000000);
     pinMode(WAKE_SERIAL, OUTPUT);
     pinMode(INTERRUPT, INPUT);
     attachInterrupt(digitalPinToInterrupt(INTERRUPT), interrupted, RISING);
@@ -10,6 +10,8 @@ void setup(){
     FastLED.addLeds<LED_TYPE, LED_PIN, COLOR_ORDER>(leds, NUM_LEDS).setCorrection( TypicalLEDStrip );
     FastLED.setBrightness(BRIGHTNESS);
     digitalWrite(WAKE_SERIAL, 0);
+
+
     //Just to add starting data
     /*EEPROM.update(0, 28);
     EEPROM.update(1, 170);
@@ -23,18 +25,21 @@ void setup(){
 }
 
 void loop(){
-    if (change_color){
-        change_color = 0;
-        changeColor();
+    if (!serial_call){
+        if (change_color){
+            change_color = 0;
+            changeColor();
+        }
+        if (new_config){
+            animationHandle();
+        }
+        if (new_config != 1 && queue){
+            queue = 0;
+            new_config = 1;
+            configUnqueue();
+        }
     }
-    if (new_config){
-        animationHandle();
-    }
-    else if (queue){
-        queue = 0;
-        new_config = 1;
-        configUnqueue();
-    }
+    
 
     /*if (!serial_call && millis() - comunication_timespan >= 5000 && new_config == 0){
         comunication_timespan = millis();
@@ -45,36 +50,36 @@ void loop(){
             new_config = 1;
         }
     }*/
-    if (serial_call){
-        digitalWrite(WAKE_SERIAL, 1);
-    }
+    serialEvent();
 }
 
 void serialEvent(){
-    //serial_call = 1;
-    if (Serial.available() > 0){
-        byte i;
-        Serial.read();
-        //Serial.read();
-        //configUnqueue();
-        //Serial.readBytes(led_config_queue, 4);
+    byte data_len = Serial.available();
+    if (data_len > 0){
+        /*if (data_len < 4){
+            Serial.flush();
+            return;
+        }
+        /*Serial.read();
+        Serial.read();*/
+        serial_call = 0;
+        Serial.readBytes(led_config_queue, data_len);
+        Serial.flush();
+        for(byte i = 0; i < 4; i++){
+            Serial.println((int)led_config_queue[i]);
+        }
+        Serial.println("");
         if (led_config_queue[animation] == led_config[animation]){
             change_color = 1;
             configUnqueue();
         }
+        else if (led_config_queue[animation] >= wave_on) {
+            configUnqueue();
+        }
         else {
-            new_config = 1;
-        }
-        if (led_config_queue[animation] % 2 == 1 || led_config_queue[animation] >= wave_on){
-            for (byte i = 0; i < 4; i++){
-                led_config[i] = led_config_queue[i];
-            }
-            queue = 0; //ner dubbio
-        }
-        else if (!queue && !change_color){
             queue = 1;
-            led_config[animation]++;
         }
+
         if (comunication_timespan == 0){
             comunication_failed = 0;
             if (led_config[animation] % 2 == 0){
@@ -82,11 +87,11 @@ void serialEvent(){
             }
         }
         comunication_timespan = millis();
-        serial_call = 0;
-        digitalWrite(WAKE_SERIAL, 0);
+        //serial_call = 0;
     }
 }
 
 void interrupted(){
-
+    serial_call = 1;
+    //analogWrite(LED_PIN, 0);
 }

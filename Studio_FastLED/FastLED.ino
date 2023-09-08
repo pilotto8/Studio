@@ -209,23 +209,3 @@ void configUnqueue(){
         led_config[i] = led_config_queue[i];
     }
 }
-
-/*byte rowNeightbour(byte i, byte direction){
-    byte offset = i / 20;
-    i %= 20;
-    if (offset % 2){
-        direction = !direction;
-    }
-    if (direction){
-        return ((i + 1) % 20) + offset * 20;
-    }
-    else {
-        return ((i + 19) % 20) + offset * 20;
-    }
-}
-
-byte colNeightbour(byte i, byte direction){
-    byte offset = i / 20;
-    i %= 20;
-    return 0;
-}*/

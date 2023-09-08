@@ -71,6 +71,7 @@ void parExecutor(byte i){
         case  14 ... 26:{
             if (interface == light_inter || i == 26){
                 sendLightData(1); // profilePointer() already included
+                //sendLightData(0);
                 if (interface == light_inter){
                     element_list[2].pointer = light_hue;
                     element_list[3].pointer = light_saturation;

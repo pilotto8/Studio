@@ -1,8 +1,8 @@
 #include "Settings.h"
 #define OLED 1
-#define BUTTONS 0
+#define BUTTONS 1
 #define RTC 1
-#define MOOVEMENT 0
+#define MOOVEMENT 1
 volatile byte* NEW_PARAMETER[] = {
 
 0}; // Just for developing purposes. If there are new parameters just put them here one time
@@ -12,7 +12,7 @@ volatile byte* NEW_PARAMETER[] = {
 #define shift_setup 0
 
 void setup() {
-    Serial.begin(57600);
+    Serial.begin(1000000);
     pinMode(SRCLK, OUTPUT);
     pinMode(RCLK, OUTPUT);
     pinMode(DATA_OUT, OUTPUT);
@@ -28,8 +28,8 @@ void setup() {
 
     pinMode(WAKE_SERIAL, OUTPUT);
     pinMode(INTERRUPT, INPUT);
-    attachInterrupt(digitalPinToInterrupt(INTERRUPT), pushSerial, RISING);
-    digitalWrite(WAKE_SERIAL, 0);
+    //attachInterrupt(digitalPinToInterrupt(INTERRUPT), pushSerial, RISING);
+    //digitalWrite(WAKE_SERIAL, 0);
     
     #if OLED
     oledInit();
@@ -54,12 +54,18 @@ void setup() {
             eepromUpdate(NEW_PARAMETER[i]);
         }
     }
+
+    EEPROM.update(14 + eeprom_offset, 0);
+    /*EEPROM.update(15 + eeprom_offset, 28);
+    EEPROM.update(18 + eeprom_offset, 170);
+    EEPROM.update(21 + eeprom_offset, 255);
+    EEPROM.update(24 + eeprom_offset, 1);*/
     
     eepromDownload();
     
     regState[0] = EEPROM.read(0);
     regState[1] = EEPROM.read(1);
-    if (regState[1] << 1 != 0){ //Recovery from register corruption (buttons wuldn't works)
+    if (regState[1] << 1 != 0){ //Recovery from register corruption (buttons wuldn't work)
         regState[1] >>= 6;
         regState[1] <<= 6;
     }
@@ -103,7 +109,8 @@ void loop() {
         }
     #endif
 
-    if (interface != home_inter && interface != sleep_inter && millis() - no_interaction >= 30000){
+    if (interface != home_inter && interface != sleep_inter && millis() - no_interaction >= 40000){
+        //sendLightData(28, 170, 255, 2);
         selector = 1;
         if (interface == alarm_inter){
             #if BUTTONS
@@ -116,4 +123,22 @@ void loop() {
     #if MOOVEMENT
         checkMoovement();
     #endif
+
+    if (serial_call){
+        if (millis() - mill_serial_call > 150){
+            pushSerial();
+            serial_call = 0;
+        }
+    }
 }
+
+/*
+void serialEvent(){
+    if (Serial.available() > 0){
+        byte receiver = 0;
+        receiver = Serial.read();
+        if (receiver == 1){
+            pushSerial();
+        }
+    }
+}*/

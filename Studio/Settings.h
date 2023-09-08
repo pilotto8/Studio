@@ -180,4 +180,5 @@ byte tap_index;*/
 
 // Serial comunication
 char data_light[4];
-bool requested;
+bool serial_call;
+unsigned long int mill_serial_call;
