@@ -55,11 +55,7 @@ void setup() {
         }
     }
 
-    //EEPROM.update(14 + eeprom_offset, 0);
-    /*EEPROM.update(15 + eeprom_offset, 28);
-    EEPROM.update(18 + eeprom_offset, 170);
-    EEPROM.update(21 + eeprom_offset, 255);
-    EEPROM.update(24 + eeprom_offset, 1);*/
+    EEPROM.update(28 + eeprom_offset, 0);
     
     eepromDownload();
     

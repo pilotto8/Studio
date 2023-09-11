@@ -1,14 +1,14 @@
 const byte* address[] {
-    &temp_minute, &temp_hour, &temp_day, &temp_month, &temp_year,
-    &temp_num_plug, 
-    &plug_trigg_0, &plug_trigg_1, &plug_trigg_2, &plug_trigg_3,
-    &plug_limit_0, &plug_limit_1, &plug_limit_2, &plug_limit_3,
-    &light_profile,
-    &light_hue_0, &light_hue_1, &light_hue_2,
-    &light_saturation_0, &light_saturation_1, &light_saturation_2,
-    &light_value_0, &light_value_1, &light_value_2,
-    &light_animation_0, &light_animation_1, &light_animation_2,
-    &moove_timer, &moove_wake
+    &temp_minute, &temp_hour, &temp_day, &temp_month, &temp_year, //0
+    &temp_num_plug, //5
+    &plug_trigg_0, &plug_trigg_1, &plug_trigg_2, &plug_trigg_3, //6
+    &plug_limit_0, &plug_limit_1, &plug_limit_2, &plug_limit_3, //10
+    &light_profile, //14
+    &light_hue_0, &light_hue_1, &light_hue_2, //15
+    &light_saturation_0, &light_saturation_1, &light_saturation_2, //18
+    &light_value_0, &light_value_1, &light_value_2, //21
+    &light_animation_0, &light_animation_1, &light_animation_2, //24
+    &moove_timer, &moove_wake //27
     ,0};
 
 void writeParam(byte* pointer, byte value){
@@ -71,7 +71,6 @@ void parExecutor(byte i){
         case  14 ... 26:{
             if (interface == light_inter || i == 26){
                 sendLightData(1); // profilePointer() already included
-                //sendLightData(0);
                 if (interface == light_inter){
                     element_list[2].pointer = light_hue;
                     element_list[3].pointer = light_saturation;
@@ -83,13 +82,3 @@ void parExecutor(byte i){
         }
     }
 }
-
-/*String downloadString(byte num_string){
-    byte i, q;
-    String temp = 0;
-    for (i = 0, q = 0; i < num_string; i++, q += string_bytes[i]){}
-    for (i = 0; i < string_bytes[i]; i++){
-        temp += (char)EEPROM.read(eeprom_first_string + q + i);
-    }
-    return temp;
-}*/

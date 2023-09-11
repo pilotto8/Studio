@@ -7,27 +7,23 @@ void sendLightData(byte hue, byte saturation, byte value, byte animation){
         data_light[3] = animation;
         serial_call = 1;
         mill_serial_call = millis();
-        //pushSerial();
     }
     
 }
 
 void sendLightData(byte state){
-    pointerProfile(light_profile);
+    if (light_profile != prev_light_profile){
+        prev_light_profile = light_profile;
+        pointerProfile(light_profile);
+    }
     sendLightData(*light_hue, *light_saturation, *light_value, *light_animation * 2 + !state);
 }
 
 void pushSerial(){
-    /*Serial.write(0);// bytes to avoid bit corruptions
-    Serial.write(0);*/
-    //Serial.flush();
     Serial.write(data_light[0]);
     Serial.write(data_light[1]);
     Serial.write(data_light[2]);
     Serial.write(data_light[3]);
-    /*for (i = 0; i < 4; i++){
-        Serial.write(data_light[i]);
-    }*/
     digitalWrite(WAKE_SERIAL, 0);
 }
 

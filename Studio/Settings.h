@@ -137,6 +137,7 @@ byte plug_reference_3;
 
 // Leds
 byte light_profile = 0;
+byte prev_light_profile = 255;
 
 byte* light_hue;
 byte* light_saturation;
