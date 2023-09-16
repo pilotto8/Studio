@@ -164,14 +164,15 @@ byte light_animation_2;
 unsigned long int no_interaction;
 
 // Microwave sensor
+#define NO_MOOVE_TIMER 720000 //720000ms = 12min
 bool moovement_state = 1;
 unsigned long int no_moovement;
-unsigned int mill_wake;
-unsigned int mill_wake_ignore;
+//unsigned int mill_wake;
+//unsigned int mill_wake_ignore;
 
 byte moove_timer;
-byte moove_wake;
-bool shutdown_method;
+//byte moove_wake;
+//bool shutdown_method;
 
 // Microphone
 /*unsigned long int no_microphone;

@@ -6,7 +6,7 @@
 #define LED_TYPE    WS2811
 #define COLOR_ORDER BRG
 CRGB leds[NUM_LEDS];
-#define UPDATES_PER_SECOND 80
+#define UPDATES_PER_SECOND 120
 //CRGBPalette16 currentPalette;
 //TBlendType    currentBlending;
 
@@ -53,7 +53,7 @@ byte pointer;
 
 // Serial
 bool serial_call;
+bool comunication_failed = 1;
 
 //EEPROM
-boolean comunication_failed = 1;
 unsigned long int comunication_timespan = 0;

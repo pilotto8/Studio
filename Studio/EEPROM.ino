@@ -8,8 +8,8 @@ const byte* address[] {
     &light_saturation_0, &light_saturation_1, &light_saturation_2, //18
     &light_value_0, &light_value_1, &light_value_2, //21
     &light_animation_0, &light_animation_1, &light_animation_2, //24
-    &moove_timer, &moove_wake //27
-    ,0};
+    &moove_timer, //27
+    0};
 
 void writeParam(byte* pointer, byte value){
     *pointer = value;
@@ -75,7 +75,7 @@ void parExecutor(byte i){
                     element_list[2].pointer = light_hue;
                     element_list[3].pointer = light_saturation;
                     element_list[4].pointer = light_value;
-                    //element_list[5].pointer = light_animation;
+                    element_list[5].pointer = light_animation;
                 }
             }
             break;

@@ -55,7 +55,7 @@ void setup() {
         }
     }
 
-    EEPROM.update(28 + eeprom_offset, 0);
+    EEPROM.update(28 + eeprom_offset, 1);
     
     eepromDownload();
     
@@ -106,7 +106,6 @@ void loop() {
     #endif
 
     if (interface != home_inter && interface != sleep_inter && millis() - no_interaction >= 40000){
-        //sendLightData(28, 170, 255, 2);
         selector = 1;
         if (interface == alarm_inter){
             #if BUTTONS
@@ -121,20 +120,9 @@ void loop() {
     #endif
 
     if (serial_call){
-        if (millis() - mill_serial_call > 150){
+        if (millis() - mill_serial_call > 50){
             pushSerial();
             serial_call = 0;
         }
     }
 }
-
-/*
-void serialEvent(){
-    if (Serial.available() > 0){
-        byte receiver = 0;
-        receiver = Serial.read();
-        if (receiver == 1){
-            pushSerial();
-        }
-    }
-}*/

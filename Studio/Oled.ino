@@ -71,7 +71,7 @@ void loadInterface(){
                 title_list = 1;
                 defElement(0, F("Moove"), home_inter);
                 defElement(1, F("Time"), &moove_timer, 1, 10);
-                defElement(2, F("Wake"), &moove_wake, 0, 1);
+                //defElement(2, F("Wake"), &moove_wake, 0, 1);
                 break;
             }
 
