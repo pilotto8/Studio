@@ -120,7 +120,7 @@ void loop() {
     #endif
 
     if (serial_call){
-        if (millis() - mill_serial_call > 50){
+        if (millis() - mill_serial_call > 70){
             pushSerial();
             serial_call = 0;
         }
