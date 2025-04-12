@@ -1,6 +1,6 @@
-byte findButton(){
-    byte i = 9;
-    byte c = 4;
+uint8_t findButton(){
+    uint8_t i = 9;
+    uint8_t c = 4;
     
     setSReg(13, 15, 1);
     while(c >= 1){
@@ -57,7 +57,7 @@ void buttonsHandle(){
                     temp_plugs = 0;
                     setBits(&temp_plugs, button - 4, 1);
                     setSReg(0, button + 1, 1);
-                    byte timerFound = findTimerPlug(button - 4);
+                    uint8_t timerFound = findTimerPlug(button - 4);
                     if (timerFound){
                         temp_time_span = alarm_timer[timerFound - 1].time_span;
                     }

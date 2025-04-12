@@ -1,6 +1,6 @@
 void sendLightData(byte hue, byte saturation, byte value, byte animation){
     if (data_light[0] != hue || data_light[1] != saturation || data_light[2] != value || data_light[3] != animation){
-        digitalWrite(WAKE_SERIAL, 1);
+        //digitalWrite(WAKE_SERIAL, 1);
         data_light[0] = hue;
         data_light[1] = saturation;
         data_light[2] = value;
@@ -24,7 +24,7 @@ void pushSerial(){
     Serial.write(data_light[1]);
     Serial.write(data_light[2]);
     Serial.write(data_light[3]);
-    digitalWrite(WAKE_SERIAL, 0);
+    //digitalWrite(WAKE_SERIAL, 0);
 }
 
 void pointerProfile(byte profile){
