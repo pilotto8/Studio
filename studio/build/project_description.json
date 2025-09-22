@@ -1915,7 +1915,7 @@
             "managed_reqs": [],
             "managed_priv_reqs": [],
             "file": "C:/Users/matti/Documents/GitHub/Studio/studio/build/esp-idf/ws2812_led/libws2812_led.a",
-            "sources": [ "C:/Users/matti/.espressif/esp-rainmaker/examples/common/ws2812_led/ws2812_led.c" ],
+            "sources": [ "C:/Users/matti/.espressif/esp-rainmaker/examples/common/ws2812_led/ws2812_led.c", "C:/Users/matti/.espressif/esp-rainmaker/examples/common/ws2812_led/led_strip_rmt_ws2812.c" ],
             "include_dirs": [ "." ]
         },
         "xtensa": {

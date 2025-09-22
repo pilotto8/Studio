@@ -28,76 +28,111 @@
 
 static const char *TAG = "app_main";
 
-esp_rmaker_device_t *light_device;
+// esp_rmaker_device_t *light_device;
 esp_rmaker_device_t *fan_device;
 esp_rmaker_device_t *temp_sensor_device;
-power_socket_t power_socket[4] = {
+rm_device_t power_socket[4] = {
     [0] = {
         .name = "Power socket 0",
+        .type = D_POWER_SOCKET,
         .state = DEFAULT_SWITCH_POWER,
         .output = 12,
         .input = 4,
     },
     [1] = {
         .name = "Power socket 1",
+        .type = D_POWER_SOCKET,
         .state = DEFAULT_SWITCH_POWER,
         .output = 14,
         .input = 16,
     },
     [2] = {
         .name = "Power socket 2",
+        .type = D_POWER_SOCKET,
         .state = DEFAULT_SWITCH_POWER,
         .output = 27,
         .input = 17,
     },
     [3] = {
         .name = "Power socket 3",
+        .type = D_POWER_SOCKET,
         .state = DEFAULT_SWITCH_POWER,
         .output = 26,
         .input = 5,
     },
 };
+rm_device_t rgb_light = {
+    .name = "RGB light",
+    .type = D_RGB,
+    .state = DEFAULT_LIGHT_POWER,
+    .output = 15,
+    .hue = DEFAULT_HUE,
+    .saturation = DEFAULT_SATURATION,
+    .brightness = DEFAULT_BRIGHTNESS,
+};
 
 /* Callback to handle commands received from the RainMaker cloud */
-static esp_err_t write_cb(const esp_rmaker_device_t *device, const esp_rmaker_param_t *param,
-                          const esp_rmaker_param_val_t val, void *priv_data, esp_rmaker_write_ctx_t *ctx)
+static esp_err_t write_cb(const esp_rmaker_device_t *device, const esp_rmaker_param_write_req_t write_req[],
+                          uint8_t count, void *priv_data, esp_rmaker_write_ctx_t *ctx)
 {
     if (ctx)
     {
         ESP_LOGI(TAG, "Received write request via : %s", esp_rmaker_device_cb_src_to_str(ctx->src));
     }
-    const char *device_name = esp_rmaker_device_get_name(device);
-    const char *param_name = esp_rmaker_param_get_name(param);
-    if (strcmp(param_name, ESP_RMAKER_DEF_POWER_NAME) == 0)
+    for (int i = 0; i < count; i++)
     {
-        ESP_LOGI(TAG, "Received value = %s for %s - %s",
-                 val.val.b ? "true" : "false", device_name, param_name);
-
-        for (uint8_t soc = 0; soc < 4; soc++)
+        const esp_rmaker_param_t *param = write_req[i].param;
+        esp_rmaker_param_val_t val = write_req[i].val;
+        const char *device_name = esp_rmaker_device_get_name(device);
+        const char *param_name = esp_rmaker_param_get_name(param);
+        if (strcmp(param_name, ESP_RMAKER_DEF_POWER_NAME) == 0)
         {
-            if (strcmp(device_name, power_socket[soc].name) == 0)
+            ESP_LOGI(TAG, "Received value = %s for %s - %s",
+                     val.val.b ? "true" : "false", device_name, param_name);
+
+            for (uint8_t soc = 0; soc < 4; soc++)
             {
-                app_driver_set_state(&power_socket[soc], val.val.b);
-                break;
+                if (strcmp(device_name, power_socket[soc].name) == 0)
+                {
+                    app_power_socket_set_power(&power_socket[soc], val.val.b);
+                    break;
+                }
+            }
+            if (strcmp(device_name, rgb_light.name) == 0)
+            {
+                app_light_set_power(&rgb_light, val.val.b);
             }
         }
+        else if (strcmp(param_name, ESP_RMAKER_DEF_BRIGHTNESS_NAME) == 0)
+        {
+            app_light_set_brightness(&rgb_light, val.val.b);
+            ESP_LOGI(TAG, "Received value = %d for %s - %s",
+                     val.val.i, device_name, param_name);
+        }
+        else if (strcmp(param_name, ESP_RMAKER_DEF_HUE_NAME) == 0)
+        {
+            app_light_set_hue(&rgb_light, val.val.b);
+            ESP_LOGI(TAG, "Received value = %d for %s - %s",
+                     val.val.i, device_name, param_name);
+        }
+        else if (strcmp(param_name, ESP_RMAKER_DEF_SATURATION_NAME) == 0)
+        {
+            app_light_set_saturation(&rgb_light, val.val.b);
+            ESP_LOGI(TAG, "Received value = %d for %s - %s",
+                     val.val.i, device_name, param_name);
+        }
+        else if (strcmp(param_name, ESP_RMAKER_DEF_SPEED_NAME) == 0)
+        {
+            ESP_LOGI(TAG, "Received value = %d for %s - %s",
+                     val.val.i, device_name, param_name);
+        }
+        else
+        {
+            /* Silently ignoring invalid params */
+            return ESP_OK;
+        }
+        esp_rmaker_param_update(param, val);
     }
-    else if (strcmp(param_name, ESP_RMAKER_DEF_BRIGHTNESS_NAME) == 0)
-    {
-        ESP_LOGI(TAG, "Received value = %d for %s - %s",
-                 val.val.i, device_name, param_name);
-    }
-    else if (strcmp(param_name, ESP_RMAKER_DEF_SPEED_NAME) == 0)
-    {
-        ESP_LOGI(TAG, "Received value = %d for %s - %s",
-                 val.val.i, device_name, param_name);
-    }
-    else
-    {
-        /* Silently ignoring invalid params */
-        return ESP_OK;
-    }
-    esp_rmaker_param_update(param, val);
     return ESP_OK;
 }
 
@@ -106,17 +141,12 @@ void app_main()
     /* Initialize Application specific hardware drivers and
      * set initial state.
      */
-    ESP_LOGI(TAG, "main_task: free heap before driver init: %u", esp_get_free_heap_size());
     app_driver_init();
-    ESP_LOGI(TAG, "main_task: free heap after driver init: %u", esp_get_free_heap_size());
-    ESP_LOGI(TAG, "main_task: stack high water after driver init: %u", (unsigned)uxTaskGetStackHighWaterMark(NULL));
-    vTaskDelay(pdMS_TO_TICKS(50));
     for (uint8_t soc = 0; soc < 4; soc++)
     {
-        app_driver_set_state(&power_socket[soc], DEFAULT_SWITCH_POWER);
+        app_power_socket_set_power(&power_socket[soc], DEFAULT_SWITCH_POWER);
     }
-    ESP_LOGI(TAG, "main_task: free heap after setting initial states: %u", esp_get_free_heap_size());
-    vTaskDelay(pdMS_TO_TICKS(20));
+    app_light_set_power(&rgb_light, DEFAULT_LIGHT_POWER);
 
     /* Initialize NVS. */
     esp_err_t err = nvs_flash_init();
@@ -126,19 +156,12 @@ void app_main()
         err = nvs_flash_init();
     }
     ESP_ERROR_CHECK(err);
-    ESP_LOGI(TAG, "main_task: free heap after nvs init: %u", esp_get_free_heap_size());
-    ESP_LOGI(TAG, "main_task: stack high water after nvs init: %u", (unsigned)uxTaskGetStackHighWaterMark(NULL));
-    vTaskDelay(pdMS_TO_TICKS(50));
 
     // ESP_LOGI(TAG, "flag1");
 
     /* Initialize Wi-Fi. Note that, this should be called before esp_rmaker_node_init()
      */
-    ESP_LOGI(TAG, "main_task: free heap before network init: %u", esp_get_free_heap_size());
     app_network_init();
-    ESP_LOGI(TAG, "main_task: free heap after network init: %u", esp_get_free_heap_size());
-    ESP_LOGI(TAG, "main_task: stack high water after network init: %u", (unsigned)uxTaskGetStackHighWaterMark(NULL));
-    vTaskDelay(pdMS_TO_TICKS(50));
 
     /* Initialize the ESP RainMaker Agent.
      * Note that this should be called after app_network_init() but before app_network_start()
@@ -153,39 +176,38 @@ void app_main()
         vTaskDelay(5000 / portTICK_PERIOD_MS);
         abort();
     }
-    ESP_LOGI(TAG, "main_task: free heap after rmaker node init: %u", esp_get_free_heap_size());
-    ESP_LOGI(TAG, "main_task: stack high water after rmaker node init: %u", (unsigned)uxTaskGetStackHighWaterMark(NULL));
-    vTaskDelay(pdMS_TO_TICKS(50));
 
     /* Create a Switch device and add the relevant parameters to it */
     for (uint8_t soc = 0; soc < 4; soc++)
     {
         power_socket[soc].device = esp_rmaker_switch_device_create(power_socket[soc].name, NULL, DEFAULT_SWITCH_POWER);
-        if (power_socket[soc].device) {
-            esp_rmaker_device_add_cb(power_socket[soc].device, write_cb, NULL);
+        if (power_socket[soc].device)
+        {
+            esp_rmaker_device_add_bulk_cb(power_socket[soc].device, write_cb, NULL);
             esp_rmaker_node_add_device(node, power_socket[soc].device);
-        } else {
+        }
+        else
+        {
             ESP_LOGW(TAG, "Failed to create device for %s", power_socket[soc].name);
         }
     }
 
-    /* Create a Light device and add the relevant parameters to it */
-    light_device = esp_rmaker_lightbulb_device_create("Light", NULL, DEFAULT_LIGHT_POWER);
-    esp_rmaker_device_add_cb(light_device, write_cb, NULL);
-    esp_rmaker_device_add_param(light_device, esp_rmaker_brightness_param_create(ESP_RMAKER_DEF_BRIGHTNESS_NAME, DEFAULT_LIGHT_BRIGHTNESS));
-    esp_rmaker_device_add_attribute(light_device, "Serial Number", "012345");
-    esp_rmaker_device_add_attribute(light_device, "MAC", "xx:yy:zz:aa:bb:cc");
-    esp_rmaker_node_add_device(node, light_device);
+    rgb_light.device = esp_rmaker_lightbulb_device_create(rgb_light.name, NULL, DEFAULT_LIGHT_POWER);
+    esp_rmaker_device_add_bulk_cb(rgb_light.device, write_cb, NULL);
+    esp_rmaker_device_add_param(rgb_light.device, esp_rmaker_brightness_param_create(ESP_RMAKER_DEF_BRIGHTNESS_NAME, DEFAULT_BRIGHTNESS));
+    esp_rmaker_device_add_param(rgb_light.device, esp_rmaker_hue_param_create(ESP_RMAKER_DEF_HUE_NAME, DEFAULT_HUE));
+    esp_rmaker_device_add_param(rgb_light.device, esp_rmaker_saturation_param_create(ESP_RMAKER_DEF_SATURATION_NAME, DEFAULT_SATURATION));
+    esp_rmaker_node_add_device(node, rgb_light.device);
 
     /* Create a Fan device and add the relevant parameters to it */
     fan_device = esp_rmaker_fan_device_create("Fan", NULL, DEFAULT_FAN_POWER);
-    esp_rmaker_device_add_cb(fan_device, write_cb, NULL);
+    esp_rmaker_device_add_bulk_cb(fan_device, write_cb, NULL);
     esp_rmaker_device_add_param(fan_device, esp_rmaker_speed_param_create(ESP_RMAKER_DEF_SPEED_NAME, DEFAULT_FAN_SPEED));
     esp_rmaker_node_add_device(node, fan_device);
 
     /* Create a Temperature Sensor device and add the relevant parameters to it */
-    temp_sensor_device = esp_rmaker_temp_sensor_device_create("Temperature Sensor", NULL, app_get_current_temperature());
-    esp_rmaker_node_add_device(node, temp_sensor_device);
+    // temp_sensor_device = esp_rmaker_temp_sensor_device_create("Temperature Sensor", NULL, app_get_current_temperature());
+    // esp_rmaker_node_add_device(node, temp_sensor_device);
 
     ESP_LOGI(TAG, "Devices added");
 
@@ -210,9 +232,6 @@ void app_main()
 
     /* Start the ESP RainMaker Agent */
     esp_rmaker_start();
-    ESP_LOGI(TAG, "main_task: free heap after rmaker start: %u", esp_get_free_heap_size());
-    ESP_LOGI(TAG, "main_task: stack high water after rmaker start: %u", (unsigned)uxTaskGetStackHighWaterMark(NULL));
-    vTaskDelay(pdMS_TO_TICKS(50));
 
     /* Start the Wi-Fi.
      * If the node is provisioned, it will start connection attempts,
